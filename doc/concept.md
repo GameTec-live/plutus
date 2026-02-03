@@ -1,0 +1,3 @@
+# Concept - `<NAME>`
+
+> Write an excessive documentation on how you are going to solve the given problem...
