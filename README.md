@@ -8,7 +8,7 @@
 Plutus is a project with the primary objective to develop an intuitive platform where users and communities can showcase their projects and, through seamless integration with [Open Collective](https://opencollective.com/), secure funding for their initiatives or contribute to projects they find compelling. Plutus streamlines the process of discovering, sharing, and financially supporting a diverse range of projects.
 
 ---
-> **Fun Fact:** The name "Plutus" is derived from the Greek god of wealth, symbolising the platform's mission to facilitate financial support for projects and communities.
+> **Fun Fact:** The name "Plutus" is derived from the Greek god of wealth, symbolizing the platform's mission to facilitate financial support for projects and communities.
 
 ## Getting Started
 
