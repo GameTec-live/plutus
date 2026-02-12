@@ -7,7 +7,8 @@
     "dev-sec": "infisical run -- bun run dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "types": "tsc --pretty --noEmit"
   },
   "dependencies": {
     "@apollo/client": "^4.0.11",
