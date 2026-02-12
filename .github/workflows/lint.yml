@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up bun
         uses: oven-sh/setup-bun@v2
@@ -22,3 +22,11 @@ jobs:
 
       - name: Run type check
         run: bun run types
+
+      - name: Setup biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+
+      - name: Run biome
+        run: biome ci

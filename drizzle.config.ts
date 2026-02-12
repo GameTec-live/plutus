@@ -6,6 +6,7 @@ export default defineConfig({
     schema: "./lib/db/schema.ts",
     dialect: "postgresql",
     dbCredentials: {
+        // biome-ignore lint/style/noNonNullAssertion: Env var, its fine
         url: process.env.DATABASE_URL!,
     },
 });
