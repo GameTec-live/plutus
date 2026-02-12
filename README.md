@@ -115,9 +115,9 @@ Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.s
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Bun-img]: https://img.shields.io/badge/BUN-grey?style=flat&logo=Bun&logoColor=FAF4EA&logoSize=auto
+[Bun-img]: https://img.shields.io/badge/BUN-grey?style=for-the-badge&logo=Bun&logoColor=FAF4EA&logoSize=auto
 [Bun-url]: https://bun.com/
-[PostgreSQL-img]: https://img.shields.io/badge/PostgreSQL-white?style=flat&logo=postgresql&logoColor=blue&logoSize=auto
+[PostgreSQL-img]: https://img.shields.io/badge/PostgreSQL-white?style=for-the-badge&logo=postgresql&logoColor=blue&logoSize=auto
 [PostgreSQL-url]: https://www.postgresql.org/
-[OpenCollective-img]: https://img.shields.io/badge/open%20collective-white?style=flat&logo=opencollective&logoColor=lightblue&logoSize=auto
+[OpenCollective-img]: https://img.shields.io/badge/open%20collective-white?style=for-the-badge&logo=opencollective&logoColor=lightblue&logoSize=auto
 [OpenCollective-url]: https://opencollective.com/
