@@ -10,7 +10,7 @@ Plutus is a project with the primary objective to develop an intuitive platform 
 ---
 > **Fun Fact:** The name "Plutus" is derived from the Greek god of wealth, symbolizing the platform's mission to facilitate financial support for projects and communities.
 
-## Build With
+## Built With
 
 * [![Next][Next.js]][Next-url]
 
@@ -20,7 +20,7 @@ Plutus is a project with the primary objective to develop an intuitive platform 
 
 * [![PostgreSQL][PostgreSQL-img]][PostgreSQL-url]
 
-* [![OpenCollective][OpenCollective-img]][Opencollective-url]
+* [![OpenCollective][OpenCollective-img]][OpenCollective-url]
 
 
 
