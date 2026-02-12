@@ -20,7 +20,7 @@ Plutus is a project with the primary objective to develop an intuitive platform 
 
 * [![PostgreSQL][PostgreSQL-img]][PostgreSQL-url]
 
-* [![OpenCollective][OpenCollective-img]][Opencollective-url]
+* [![OpenCollective][OpenCollective-img]][OpenCollective-url]
 
 
 
