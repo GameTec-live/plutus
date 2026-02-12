@@ -10,6 +10,20 @@ Plutus is a project with the primary objective to develop an intuitive platform 
 ---
 > **Fun Fact:** The name "Plutus" is derived from the Greek god of wealth, symbolizing the platform's mission to facilitate financial support for projects and communities.
 
+## Build With
+
+* [![Next][Next.js]][Next-url]
+
+* [![React][React.js]][React-url]
+
+* [![Bun][Bun-img]][Bun-url]
+
+* [![PostgreSQL][PostgreSQL-img]][PostgreSQL-url]
+
+* [![OpenCollective][OpenCollective-img]][Opencollective-url]
+
+
+
 ## Getting Started
 
 Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.sh/) as the runtime environment. It leverages [Neon DB](https://neon.tech/) or PostgreSQL for database management, [Drizzle ORM](https://orm.drizzle.team/) for database interactions, and integrates with [Open Collective](https://opencollective.com/) for funding functionalities. The frontend is built with React and styled using Tailwind CSS.
@@ -95,3 +109,15 @@ Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.s
 ## Documentation
 
 **COMING SOON**
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Bun-img]: https://img.shields.io/badge/BUN-grey?style=flat&logo=Bun&logoColor=FAF4EA&logoSize=auto
+[Bun-url]: https://bun.com/
+[PostgreSQL-img]: https://img.shields.io/badge/PostgreSQL-white?style=flat&logo=postgresql&logoColor=blue&logoSize=auto
+[PostgreSQL-url]: https://www.postgresql.org/
+[OpenCollective-img]: https://img.shields.io/badge/open%20collective-white?style=flat&logo=opencollective&logoColor=lightblue&logoSize=auto
+[OpenCollective-url]: https://opencollective.com/
