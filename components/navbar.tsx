@@ -17,7 +17,7 @@ export default function Navbar() {
     return (
         <Disclosure
             as="nav"
-            className="relative bg-white shadow-sm dark:bg-gray-800/50 dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-x-0 dark:after:bottom-0 dark:after:h-px dark:after:bg-white/10"
+            className="relative bg-background text-foreground shadow-sm dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-x-0 dark:after:bottom-0 dark:after:h-px dark:after:bg-border"
         >
             <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 <div className="flex h-16 justify-between">
@@ -39,10 +39,9 @@ export default function Navbar() {
                             />
                         </div>
                         <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
-                            {/* Current: "border-indigo-600 text-gray-900 dark:border-indigo-500 dark:text-white", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-400 dark:hover:border-white/20 dark:hover:text-white" */}
                             <Link
                                 href="/#explore"
-                                className="inline-flex items-center border-b-2 border-indigo-600 px-1 pt-1 text-sm font-medium text-gray-900 dark:border-indigo-500 dark:text-white"
+                                className="inline-flex items-center border-b-2 border-primary px-1 pt-1 text-sm font-medium text-foreground"
                             >
                                 Explore
                             </Link>
@@ -54,18 +53,18 @@ export default function Navbar() {
                                 name="search"
                                 type="search"
                                 placeholder="Search"
-                                className="col-start-1 row-start-1 block w-full rounded-md bg-white py-1.5 pr-3 pl-10 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 dark:bg-white/5 dark:text-white dark:outline-white/10 dark:placeholder:text-gray-500 dark:focus:outline-indigo-500"
+                                className="col-start-1 row-start-1 block w-full rounded-md bg-background py-1.5 pr-3 pl-10 text-base text-foreground outline-1 -outline-offset-1 outline-input placeholder:text-muted-foreground focus:outline-2 focus:-outline-offset-2 focus:outline-ring sm:text-sm/6"
                             />
                             <SearchIcon
                                 aria-hidden="true"
-                                className="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-gray-400"
+                                className="pointer-events-none col-start-1 row-start-1 ml-3 size-5 self-center text-muted-foreground"
                             />
                         </div>
                     </div>
                     <ModeToggle />
                     <div className="flex items-center lg:hidden">
                         {/* Mobile menu button */}
-                        <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-600 dark:hover:bg-white/5 dark:hover:text-white dark:focus:outline-indigo-500">
+                        <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:-outline-offset-1 focus:outline-ring">
                             <span className="absolute -inset-0.5" />
                             <span className="sr-only">Open main menu</span>
                             <MenuIcon
@@ -81,13 +80,13 @@ export default function Navbar() {
                     <div className="hidden lg:ml-4 lg:flex lg:items-center">
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-4 shrink-0">
-                            <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:focus-visible:outline-indigo-500">
+                            <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
                                 <span className="absolute -inset-1.5" />
                                 <span className="sr-only">Open user menu</span>
                                 <Image
                                     alt=""
                                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    className="size-8 rounded-full bg-gray-100 outline -outline-offset-1 outline-black/5 dark:bg-gray-800 dark:outline-white/10"
+                                    className="size-8 rounded-full bg-muted outline -outline-offset-1 outline-border"
                                     width={32}
                                     height={32}
                                 />
@@ -95,12 +94,12 @@ export default function Navbar() {
 
                             <MenuItems
                                 transition
-                                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+                                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-popover py-1 text-popover-foreground shadow-lg outline-1 outline-border transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:shadow-none"
                             >
                                 <MenuItem>
                                     <Link
                                         href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden dark:text-gray-300 dark:data-focus:bg-white/5"
+                                        className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                                     >
                                         Your profile
                                     </Link>
@@ -108,7 +107,7 @@ export default function Navbar() {
                                 <MenuItem>
                                     <Link
                                         href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden dark:text-gray-300 dark:data-focus:bg-white/5"
+                                        className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                                     >
                                         Settings
                                     </Link>
@@ -116,7 +115,7 @@ export default function Navbar() {
                                 <MenuItem>
                                     <Link
                                         href="#"
-                                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden dark:text-gray-300 dark:data-focus:bg-white/5"
+                                        className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                                     >
                                         Sign out
                                     </Link>
@@ -129,31 +128,30 @@ export default function Navbar() {
 
             <DisclosurePanel className="lg:hidden">
                 <div className="space-y-1 pt-2 pb-3">
-                    {/* Current: "bg-indigo-50 border-indigo-600 text-indigo-700 dark:border-indigo-500 dark:bg-indigo-600/10 dark:text-indigo-400", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 dark:text-gray-300 dark:hover:border-white/20 dark:hover:bg-white/5 dark:hover:text-white" */}
                     <DisclosureButton
                         as={Link}
                         href="/#explore"
-                        className="block border-l-4 border-indigo-600 bg-indigo-50 py-2 pr-4 pl-3 text-base font-medium text-indigo-700 dark:border-indigo-500 dark:bg-indigo-600/10 dark:text-indigo-400"
+                        className="block border-l-4 border-primary bg-accent py-2 pr-4 pl-3 text-base font-medium text-accent-foreground"
                     >
                         Explore
                     </DisclosureButton>
                 </div>
-                <div className="border-t border-gray-200 pt-4 pb-3 dark:border-white/10">
+                <div className="border-t border-border pt-4 pb-3">
                     <div className="flex items-center px-4">
                         <div className="shrink-0">
                             <Image
                                 alt=""
                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                className="size-10 rounded-full bg-gray-100 outline -outline-offset-1 outline-black/5 dark:bg-gray-800 dark:outline-white/10"
+                                className="size-10 rounded-full bg-muted outline -outline-offset-1 outline-border"
                                 width={32}
                                 height={32}
                             />
                         </div>
                         <div className="ml-3">
-                            <div className="text-base font-medium text-gray-800 dark:text-gray-200">
+                            <div className="text-base font-medium text-foreground">
                                 Tom Cook
                             </div>
-                            <div className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            <div className="text-sm font-medium text-muted-foreground">
                                 tom@example.com
                             </div>
                         </div>
@@ -162,21 +160,21 @@ export default function Navbar() {
                         <DisclosureButton
                             as="a"
                             href="#"
-                            className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                            className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                         >
                             Your profile
                         </DisclosureButton>
                         <DisclosureButton
                             as="a"
                             href="#"
-                            className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                            className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                         >
                             Settings
                         </DisclosureButton>
                         <DisclosureButton
                             as="a"
                             href="#"
-                            className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                            className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                         >
                             Sign out
                         </DisclosureButton>
