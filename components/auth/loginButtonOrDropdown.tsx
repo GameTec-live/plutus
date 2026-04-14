@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-export default function LoginButtonOrAvatar() {
+export default function LoginButtonOrDropdown() {
     const { data: session, isPending, error } = authClient.useSession();
     const router = useRouter();
 
