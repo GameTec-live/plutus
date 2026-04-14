@@ -20,7 +20,7 @@ export default function Navbar() {
             <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 <div className="flex h-16 justify-between">
                     <div className="flex px-2 lg:px-0">
-                        <div className="flex shrink-0 items-center">
+                        <Link className="flex shrink-0 items-center" href="/">
                             <Image
                                 alt="Plutus"
                                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
@@ -35,7 +35,7 @@ export default function Navbar() {
                                 width={32}
                                 height={32}
                             />
-                        </div>
+                        </Link>
                         <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
                             <Link
                                 href="/#explore"
@@ -45,11 +45,12 @@ export default function Navbar() {
                             </Link>
                         </div>
                     </div>
-                    <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
+                    <div className="flex flex-1 items-center justify-center px-2 lg:ml-6">
                         <div className="grid w-full grid-cols-1">
                             <input
                                 name="search"
                                 type="search"
+                                aria-label="Search"
                                 placeholder="Search"
                                 className="col-start-1 row-start-1 block w-full rounded-md bg-background py-1.5 pr-3 pl-10 text-base text-foreground outline-1 -outline-offset-1 outline-input placeholder:text-muted-foreground focus:outline-2 focus:-outline-offset-2 focus:outline-ring sm:text-sm/6"
                             />

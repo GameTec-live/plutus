@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
                 pathname: "/plus-assets/img/logos/mark.svg",
             },
             {
-            {
                 protocol: "https",
                 hostname: "images.unsplash.com",
                 port: "",

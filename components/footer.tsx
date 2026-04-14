@@ -18,7 +18,7 @@ export default function Footer() {
                         Privacy Policy
                     </Link>
                     <Link
-                        href="https://github.com/users/GameTec-live/plutus"
+                        href="https://github.com/GameTec-live/plutus"
                         className="text-muted-foreground hover:text-foreground"
                     >
                         <span className="sr-only">GitHub</span>
