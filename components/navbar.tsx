@@ -3,14 +3,12 @@ import {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
 } from "@headlessui/react";
 import { MenuIcon, SearchIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import LoginButtonOrAvatar from "./auth/loginButtonOrAvatar";
+import LoginButtonOrDropdown from "./auth/loginButtonOrDropdown";
 import { ModeToggle } from "./modeToggle";
 
 export default function Navbar() {
@@ -48,7 +46,7 @@ export default function Navbar() {
                         </div>
                     </div>
                     <div className="flex flex-1 items-center justify-center px-2 lg:ml-6 lg:justify-end">
-                        <div className="grid w-full max-w-lg grid-cols-1 lg:max-w-xs">
+                        <div className="grid w-full grid-cols-1">
                             <input
                                 name="search"
                                 type="search"
@@ -61,7 +59,9 @@ export default function Navbar() {
                             />
                         </div>
                     </div>
-                    <ModeToggle />
+                    <div className="flex items-center">
+                        <ModeToggle />
+                    </div>
                     <div className="flex items-center lg:hidden">
                         {/* Mobile menu button */}
                         <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground focus:outline-2 focus:-outline-offset-1 focus:outline-ring">
@@ -79,49 +79,7 @@ export default function Navbar() {
                     </div>
                     <div className="hidden lg:ml-4 lg:flex lg:items-center">
                         {/* Profile dropdown */}
-                        <Menu as="div" className="relative ml-4 shrink-0">
-                            <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
-                                <span className="absolute -inset-1.5" />
-                                <span className="sr-only">Open user menu</span>
-                                <Image
-                                    alt=""
-                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    className="size-8 rounded-full bg-muted outline -outline-offset-1 outline-border"
-                                    width={32}
-                                    height={32}
-                                />
-                            </MenuButton>
-
-                            <MenuItems
-                                transition
-                                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-popover py-1 text-popover-foreground shadow-lg outline-1 outline-border transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:shadow-none"
-                            >
-                                <MenuItem>
-                                    <Link
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
-                                    >
-                                        Your profile
-                                    </Link>
-                                </MenuItem>
-                                <MenuItem>
-                                    <Link
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
-                                    >
-                                        Settings
-                                    </Link>
-                                </MenuItem>
-                                <MenuItem>
-                                    <Link
-                                        href="#"
-                                        className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
-                                    >
-                                        Sign out
-                                    </Link>
-                                </MenuItem>
-                            </MenuItems>
-                        </Menu>
+                        <LoginButtonOrAvatar />
                     </div>
                 </div>
             </div>
@@ -136,50 +94,7 @@ export default function Navbar() {
                         Explore
                     </DisclosureButton>
                 </div>
-                <div className="border-t border-border pt-4 pb-3">
-                    <div className="flex items-center px-4">
-                        <div className="shrink-0">
-                            <Image
-                                alt=""
-                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                className="size-10 rounded-full bg-muted outline -outline-offset-1 outline-border"
-                                width={32}
-                                height={32}
-                            />
-                        </div>
-                        <div className="ml-3">
-                            <div className="text-base font-medium text-foreground">
-                                Tom Cook
-                            </div>
-                            <div className="text-sm font-medium text-muted-foreground">
-                                tom@example.com
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-3 space-y-1">
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        >
-                            Your profile
-                        </DisclosureButton>
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        >
-                            Settings
-                        </DisclosureButton>
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                        >
-                            Sign out
-                        </DisclosureButton>
-                    </div>
-                </div>
+                <LoginButtonOrDropdown />
             </DisclosurePanel>
         </Disclosure>
     );
