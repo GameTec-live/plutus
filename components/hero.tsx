@@ -82,6 +82,7 @@ export default function Hero() {
                                 <div className="relative">
                                     <Image
                                         alt=""
+                                        loading="eager"
                                         width={400}
                                         height={528}
                                         src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
@@ -94,6 +95,7 @@ export default function Hero() {
                                 <div className="relative">
                                     <Image
                                         alt=""
+                                        loading="eager"
                                         width={400}
                                         height={528}
                                         src="https://images.unsplash.com/photo-1485217988980-11786ced9454?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
@@ -104,6 +106,7 @@ export default function Hero() {
                                 <div className="relative">
                                     <Image
                                         alt=""
+                                        loading="eager"
                                         width={400}
                                         height={528}
                                         src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=396&h=528&q=80"
@@ -116,6 +119,7 @@ export default function Hero() {
                                 <div className="relative">
                                     <Image
                                         alt=""
+                                        loading="eager"
                                         width={400}
                                         height={528}
                                         src="https://images.unsplash.com/photo-1670272504528-790c24957dda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=left&w=400&h=528&q=80"
@@ -126,6 +130,7 @@ export default function Hero() {
                                 <div className="relative">
                                     <Image
                                         alt=""
+                                        loading="eager"
                                         width={400}
                                         height={528}
                                         src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"

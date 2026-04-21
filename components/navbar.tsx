@@ -23,6 +23,7 @@ export default function Navbar() {
                         <Link className="flex shrink-0 items-center" href="/">
                             <Image
                                 alt="Plutus"
+                                loading="eager"
                                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                                 className="h-8 w-auto dark:hidden"
                                 width={32}
@@ -30,6 +31,7 @@ export default function Navbar() {
                             />
                             <Image
                                 alt="Plutus"
+                                loading="eager"
                                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
                                 className="h-8 w-auto not-dark:hidden"
                                 width={32}
