@@ -15,7 +15,7 @@ export default function Navbar() {
     return (
         <Disclosure
             as="nav"
-            className="relative bg-background text-foreground shadow-sm dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-x-0 dark:after:bottom-0 dark:after:h-px dark:after:bg-border"
+            className="bg-background/50 backdrop-blur-md text-foreground shadow-sm dark:shadow-none dark:after:pointer-events-none dark:after:absolute dark:after:inset-x-0 dark:after:bottom-0 dark:after:h-px dark:after:bg-border sticky top-0 z-50"
         >
             <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 <div className="flex h-16 justify-between">
@@ -23,6 +23,7 @@ export default function Navbar() {
                         <Link className="flex shrink-0 items-center" href="/">
                             <Image
                                 alt="Plutus"
+                                loading="eager"
                                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                                 className="h-8 w-auto dark:hidden"
                                 width={32}
@@ -30,6 +31,7 @@ export default function Navbar() {
                             />
                             <Image
                                 alt="Plutus"
+                                loading="eager"
                                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
                                 className="h-8 w-auto not-dark:hidden"
                                 width={32}
