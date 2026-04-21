@@ -93,9 +93,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-export function ComponentExample() {
+export function ComponentExample({
+    className,
+    ...props
+}: React.ComponentProps<"div">) {
     return (
-        <ExampleWrapper>
+        <ExampleWrapper className={className} {...props}>
             <CardExample />
             <FormExample />
         </ExampleWrapper>
