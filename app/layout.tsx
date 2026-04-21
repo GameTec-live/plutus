@@ -28,7 +28,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`${geist.variable} scroll-smooth`}
+            className={`${geist.variable} motion-safe:scroll-smooth`}
             suppressHydrationWarning
         >
             <body
