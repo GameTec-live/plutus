@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import "./env";
 
 const nextConfig: NextConfig = {
     /* config options here */
@@ -18,6 +19,7 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    // transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"], // Uncomment when using standalone output
 };
 
 export default nextConfig;
