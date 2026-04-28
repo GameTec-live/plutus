@@ -18,7 +18,7 @@ export const auth = betterAuth({
             "localhost:5173",
             "plutus.gtlv.org",
             "*.vercel.app",
-            env.BETTER_AUTH_URL,
+            new URL(env.BETTER_AUTH_URL).host,
         ],
         protocol: process.env.NODE_ENV === "development" ? "http" : "https",
     },
