@@ -3,14 +3,14 @@ import * as z from "zod";
 
 export const env = createEnv({
     server: {
-        BETTER_AUTH_SECRET: z.string().length(32),
+        BETTER_AUTH_SECRET: z.string().min(32),
         BETTER_AUTH_URL: z.url(),
 
         DATABASE_URL: z.string().min(1),
 
         MEILI_INDEX: z.string().min(1),
         MEILI_MANAGE_KEY: z.string().min(1),
-        MEILI_MASTER_KEY: z.string().nullable(),
+        MEILI_MASTER_KEY: z.string().min(1).nullish(),
         MEILI_SEARCH_KEY: z.string().min(1),
         MEILI_URL: z.url(),
 
