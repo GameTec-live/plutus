@@ -8,7 +8,7 @@ export default function Page() {
                 href="/"
                 className="absolute top-5 right-5 hover:text-muted-foreground"
             >
-                <X />
+                <X aria-label="Cancel" />
             </Link>
             <div className="max-h-1/2 h-full w-full flex flex-col items-center justify-between">
                 <h1 className="text-2xl md:text-4xl font-bold">
