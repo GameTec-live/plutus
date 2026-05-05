@@ -6,6 +6,7 @@ export default function Page() {
         <div className="flex h-screen w-full flex-col items-center justify-center">
             <Link
                 href="/"
+                aria-label="Skip onboarding"
                 className="absolute top-5 right-5 hover:text-muted-foreground"
             >
                 <X aria-label="Cancel" />
