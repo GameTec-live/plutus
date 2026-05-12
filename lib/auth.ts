@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { genericOAuth } from "better-auth/plugins";
 import { env } from "@/env";
 import * as schema from "@/lib/db/schema";
 import { db } from ".";
@@ -32,4 +33,21 @@ export const auth = betterAuth({
                   },
               }
             : undefined,
+
+    plugins: [
+        genericOAuth({
+            config: [
+                {
+                    providerId: "oauth",
+                    // biome-ignore lint/style/noNonNullAssertion: Checked at build time therefore not able to be in a condtion
+                    clientId: env.OAUTH_CLIENT_ID!,
+                    // biome-ignore lint/style/noNonNullAssertion: See above!
+                    clientSecret: env.OAUTH_CLIENT_SECRET!,
+                    // biome-ignore lint/style/noNonNullAssertion: See above!
+                    discoveryUrl: env.OAUTH_DISCOVERY_URL!,
+                },
+                // Add more providers as needed
+            ],
+        }),
+    ],
 });
