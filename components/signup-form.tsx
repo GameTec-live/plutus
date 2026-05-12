@@ -55,7 +55,7 @@ export function SignupForm({
                 },
                 onSuccess: () => {
                     setLoading(false);
-                    redirect("/");
+                    redirect("/onboarding");
                 },
                 onError: (ctx) => {
                     setError(ctx.error.message);
@@ -68,7 +68,7 @@ export function SignupForm({
     const signInGithub = async () => {
         await authClient.signIn.social({
             provider: "github",
-            callbackURL: "/dashboard",
+            callbackURL: "/onboarding",
         });
     };
 

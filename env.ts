@@ -8,6 +8,9 @@ export const env = createEnv({
 
         DATABASE_URL: z.string().min(1),
 
+        GITHUB_CLIENT_ID: z.string().min(1).nullish(),
+        GITHUB_CLIENT_SECRET: z.string().min(1).nullish(),
+
         MEILI_INDEX: z.string().min(1),
         MEILI_MANAGE_KEY: z.string().min(1),
         MEILI_MASTER_KEY: z.string().min(1).nullish(),

@@ -22,4 +22,14 @@ export const auth = betterAuth({
         ],
         protocol: process.env.NODE_ENV === "development" ? "http" : "https",
     },
+
+    socialProviders:
+        env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET
+            ? {
+                  github: {
+                      clientId: env.GITHUB_CLIENT_ID,
+                      clientSecret: env.GITHUB_CLIENT_SECRET,
+                  },
+              }
+            : undefined,
 });
