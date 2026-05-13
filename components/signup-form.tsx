@@ -24,6 +24,7 @@ interface FieldStatus {
     message: string;
 }
 
+
 function getCharsetSize(pw: string): number {
     let size = 0;
     if (/[a-z]/.test(pw)) size += 26;
@@ -33,7 +34,11 @@ function getCharsetSize(pw: string): number {
     return size;
 }
 
-function getPasswordEntropy(pw: string): { bits: number; label: string; score: number } {
+function getPasswordEntropy(pw: string): {
+    bits: number;
+    label: string;
+    score: number;
+} {
     if (!pw) return { bits: 0, label: "", score: 0 };
     const R = getCharsetSize(pw);
     const L = pw.length;
@@ -51,9 +56,7 @@ function FieldMessage({ status }: { status: FieldStatus }) {
     if (status.state === "idle") {
         return <FieldDescription>{status.message}</FieldDescription>;
     }
-    return (
-        <p className="text-sm text-destructive mt-1">{status.message}</p>
-    );
+    return <p className="text-sm text-destructive mt-1">{status.message}</p>;
 }
 
 function StrengthBar({ score }: { score: number }) {
@@ -110,9 +113,15 @@ export function SignupForm({
 
     const validateUsername = (value: string) => {
         if (!value) {
-            setUsernameStatus({ state: "idle", message: "Letters, numbers, and underscores only." });
+            setUsernameStatus({
+                state: "idle",
+                message: "Letters, numbers, and underscores only.",
+            });
         } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
-            setUsernameStatus({ state: "error", message: "3–20 characters, letters, numbers, or underscores only." });
+            setUsernameStatus({
+                state: "error",
+                message: "3–20 characters, letters, numbers, or underscores only.",
+            });
         } else {
             setUsernameStatus({ state: "valid", message: "" });
         }
@@ -120,9 +129,15 @@ export function SignupForm({
 
     const validateEmail = (value: string) => {
         if (!value) {
-            setEmailStatus({ state: "idle", message: "We'll never share your email." });
+            setEmailStatus({
+                state: "idle",
+                message: "We'll never share your email.",
+            });
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            setEmailStatus({ state: "error", message: "Enter a valid email address, e.g. you@example.com." });
+            setEmailStatus({
+                state: "error",
+                message: "Enter a valid email address, e.g. you@example.com.",
+            });
         } else {
             setEmailStatus({ state: "valid", message: "" });
         }
@@ -133,9 +148,15 @@ export function SignupForm({
         setPwScore(score);
 
         if (!value) {
-            setPasswordStatus({ state: "idle", message: "Must be at least 8 characters long." });
+            setPasswordStatus({
+                state: "idle",
+                message: "Must be at least 8 characters long.",
+            });
         } else if (value.length < 8) {
-            setPasswordStatus({ state: "error", message: "Too short, need at least 8 characters." });
+            setPasswordStatus({
+                state: "error",
+                message: "Too short, need at least 8 characters.",
+            });
         } else {
             setPasswordStatus({ state: "idle", message: `Strength: ${label}` });
         }
@@ -147,9 +168,15 @@ export function SignupForm({
     const validateConfirm = (value: string, pw?: string) => {
         const password = pw ?? passwordRef.current?.value ?? "";
         if (!value) {
-            setConfirmStatus({ state: "idle", message: "Please confirm your password." });
+            setConfirmStatus({
+                state: "idle",
+                message: "Please confirm your password.",
+            });
         } else if (value !== password) {
-            setConfirmStatus({ state: "error", message: "Passwords do not match." });
+            setConfirmStatus({
+                state: "error",
+                message: "Passwords do not match.",
+            });
         } else {
             setConfirmStatus({ state: "valid", message: "" });
         }
@@ -158,7 +185,6 @@ export function SignupForm({
     const isFormValid = () =>
         usernameStatus.state === "valid" &&
         emailStatus.state === "valid" &&
-        (passwordStatus.state === "valid" || passwordStatus.state === "idle") &&
         confirmStatus.state === "valid" &&
         (passwordRef.current?.value.length ?? 0) >= 8;
 
@@ -174,9 +200,9 @@ export function SignupForm({
 
         await authClient.signUp.email(
             {
-                email: emailRef.current!.value,
-                password: passwordRef.current!.value,
-                name: nameRef.current!.value,
+                email: emailRef.current?.value ?? "",
+                password: passwordRef.current?.value ?? "",
+                name: nameRef.current?.value ?? "",
                 callbackURL: "/",
             },
             {
@@ -273,9 +299,7 @@ export function SignupForm({
                         )}
                         onChange={(e) => validatePassword(e.target.value)}
                     />
-                    {pwScore > 0 && (
-                        <StrengthBar score={pwScore} />
-                )}
+                    {pwScore > 0 && <StrengthBar score={pwScore} />}
                     <FieldMessage status={passwordStatus} />
                 </Field>
 
@@ -302,7 +326,9 @@ export function SignupForm({
 
                 {/* Submit error */}
                 {submitError && (
-                    <p className="text-sm text-destructive -mt-2">{submitError}</p>
+                    <p className="text-sm text-destructive -mt-2">
+                        {submitError}
+                    </p>
                 )}
 
                 <Field>
