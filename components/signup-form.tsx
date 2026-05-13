@@ -17,50 +17,176 @@ import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
+type FieldState = "idle" | "valid" | "error";
+
+interface FieldStatus {
+    state: FieldState;
+    message: string;
+}
+
+function getCharsetSize(pw: string): number {
+    let size = 0;
+    if (/[a-z]/.test(pw)) size += 26;
+    if (/[A-Z]/.test(pw)) size += 26;
+    if (/[0-9]/.test(pw)) size += 10;
+    if (/[^a-zA-Z0-9]/.test(pw)) size += 32;
+    return size;
+}
+
+function getPasswordEntropy(pw: string): { bits: number; label: string; score: number } {
+    if (!pw) return { bits: 0, label: "", score: 0 };
+    const R = getCharsetSize(pw);
+    const L = pw.length;
+    const bits = Math.log2(R) * L;
+
+    if (bits < 28) return { bits, label: "Very weak", score: 1 };
+    if (bits < 36) return { bits, label: "Weak", score: 2 };
+    if (bits < 60) return { bits, label: "Fair", score: 3 };
+    if (bits < 128) return { bits, label: "Strong", score: 4 };
+    return { bits, label: "Very strong", score: 5 };
+}
+
+function FieldMessage({ status }: { status: FieldStatus }) {
+    if (status.state === "valid") return null;
+    if (status.state === "idle") {
+        return <FieldDescription>{status.message}</FieldDescription>;
+    }
+    return (
+        <p className="text-sm text-destructive mt-1">{status.message}</p>
+    );
+}
+
+function StrengthBar({ score }: { score: number }) {
+    const colors = [
+        "",
+        "bg-red-500",
+        "bg-orange-400",
+        "bg-yellow-400",
+        "bg-green-500",
+        "bg-emerald-500",
+    ];
+    return (
+        <div className="mt-1.5 h-1 w-full rounded-full bg-muted overflow-hidden">
+            <div
+                className={cn(
+                    "h-full rounded-full transition-all duration-300",
+                    colors[score],
+                )}
+                style={{ width: `${score * 20}%` }}
+            />
+        </div>
+    );
+}
+
 export function SignupForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
-    const [error, setError] = useState<string | null>(null);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [pwScore, setPwScore] = useState(0);
 
-    const password = useRef<HTMLInputElement>(null);
-    const email = useRef<HTMLInputElement>(null);
-    const confirmPassword = useRef<HTMLInputElement>(null);
-    const name = useRef<HTMLInputElement>(null);
+    const [usernameStatus, setUsernameStatus] = useState<FieldStatus>({
+        state: "idle",
+        message: "Letters, numbers, and underscores only.",
+    });
+    const [emailStatus, setEmailStatus] = useState<FieldStatus>({
+        state: "idle",
+        message: "We'll never share your email.",
+    });
+    const [passwordStatus, setPasswordStatus] = useState<FieldStatus>({
+        state: "idle",
+        message: "Must be at least 8 characters long.",
+    });
+    const [confirmStatus, setConfirmStatus] = useState<FieldStatus>({
+        state: "idle",
+        message: "Please confirm your password.",
+    });
+
+    const nameRef = useRef<HTMLInputElement>(null);
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const confirmPasswordRef = useRef<HTMLInputElement>(null);
+
+    const validateUsername = (value: string) => {
+        if (!value) {
+            setUsernameStatus({ state: "idle", message: "Letters, numbers, and underscores only." });
+        } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
+            setUsernameStatus({ state: "error", message: "3–20 characters, letters, numbers, or underscores only." });
+        } else {
+            setUsernameStatus({ state: "valid", message: "" });
+        }
+    };
+
+    const validateEmail = (value: string) => {
+        if (!value) {
+            setEmailStatus({ state: "idle", message: "We'll never share your email." });
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            setEmailStatus({ state: "error", message: "Enter a valid email address, e.g. you@example.com." });
+        } else {
+            setEmailStatus({ state: "valid", message: "" });
+        }
+    };
+
+    const validatePassword = (value: string) => {
+        const { label, score } = getPasswordEntropy(value);
+        setPwScore(score);
+
+        if (!value) {
+            setPasswordStatus({ state: "idle", message: "Must be at least 8 characters long." });
+        } else if (value.length < 8) {
+            setPasswordStatus({ state: "error", message: "Too short, need at least 8 characters." });
+        } else {
+            setPasswordStatus({ state: "idle", message: `Strength: ${label}` });
+        }
+
+        const confirm = confirmPasswordRef.current?.value ?? "";
+        if (confirm) validateConfirm(confirm, value);
+    };
+
+    const validateConfirm = (value: string, pw?: string) => {
+        const password = pw ?? passwordRef.current?.value ?? "";
+        if (!value) {
+            setConfirmStatus({ state: "idle", message: "Please confirm your password." });
+        } else if (value !== password) {
+            setConfirmStatus({ state: "error", message: "Passwords do not match." });
+        } else {
+            setConfirmStatus({ state: "valid", message: "" });
+        }
+    };
+
+    const isFormValid = () =>
+        usernameStatus.state === "valid" &&
+        emailStatus.state === "valid" &&
+        (passwordStatus.state === "valid" || passwordStatus.state === "idle") &&
+        confirmStatus.state === "valid" &&
+        (passwordRef.current?.value.length ?? 0) >= 8;
 
     const signUpEmail = async () => {
-        if (
-            !email.current ||
-            !password.current ||
-            !confirmPassword.current ||
-            !name.current
-        ) {
-            return;
-        }
+        validateUsername(nameRef.current?.value ?? "");
+        validateEmail(emailRef.current?.value ?? "");
+        validatePassword(passwordRef.current?.value ?? "");
+        validateConfirm(confirmPasswordRef.current?.value ?? "");
 
-        if (password.current.value !== confirmPassword.current.value) {
-            setError("Passwords do not match");
-            return;
-        }
+        if (!isFormValid()) return;
+
+        setSubmitError(null);
 
         await authClient.signUp.email(
             {
-                email: email.current.value,
-                password: password.current.value,
-                name: name.current.value,
+                email: emailRef.current!.value,
+                password: passwordRef.current!.value,
+                name: nameRef.current!.value,
                 callbackURL: "/",
             },
             {
-                onRequest: () => {
-                    setLoading(true);
-                },
+                onRequest: () => setLoading(true),
                 onSuccess: () => {
                     setLoading(false);
                     redirect("/onboarding");
                 },
                 onError: (ctx) => {
-                    setError(ctx.error.message);
+                    setSubmitError(ctx.error.message);
                     setLoading(false);
                 },
             },
@@ -91,19 +217,27 @@ export function SignupForm({
                     <h1 className="text-xl font-bold">Create your account</h1>
                 </div>
 
+                {/* Username */}
                 <Field>
-                    <FieldLabel htmlFor="name">Username</FieldLabel>
+                    <FieldLabel htmlFor="username">Username</FieldLabel>
                     <Input
                         id="username"
                         name="username"
                         type="text"
                         placeholder="johndoe110"
                         required
-                        className="bg-background"
-                        ref={name}
+                        ref={nameRef}
+                        className={cn(
+                            "bg-background",
+                            usernameStatus.state === "error" &&
+                                "border-destructive focus-visible:ring-destructive",
+                        )}
+                        onChange={(e) => validateUsername(e.target.value)}
                     />
+                    <FieldMessage status={usernameStatus} />
                 </Field>
 
+                {/* Email */}
                 <Field>
                     <FieldLabel htmlFor="email">Email</FieldLabel>
                     <Input
@@ -112,15 +246,18 @@ export function SignupForm({
                         type="email"
                         placeholder="m@example.com"
                         required
-                        className="bg-background"
-                        ref={email}
+                        ref={emailRef}
+                        className={cn(
+                            "bg-background",
+                            emailStatus.state === "error" &&
+                                "border-destructive focus-visible:ring-destructive",
+                        )}
+                        onChange={(e) => validateEmail(e.target.value)}
                     />
-                    <FieldDescription>
-                        We&apos;ll use this to contact you. We will not share
-                        your email with anyone else.
-                    </FieldDescription>
+                    <FieldMessage status={emailStatus} />
                 </Field>
 
+                {/* Password */}
                 <Field>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
                     <Input
@@ -128,14 +265,21 @@ export function SignupForm({
                         name="password"
                         type="password"
                         required
-                        className="bg-background"
-                        ref={password}
+                        ref={passwordRef}
+                        className={cn(
+                            "bg-background",
+                            passwordStatus.state === "error" &&
+                                "border-destructive focus-visible:ring-destructive",
+                        )}
+                        onChange={(e) => validatePassword(e.target.value)}
                     />
-                    <FieldDescription>
-                        Must be at least 8 characters long.
-                    </FieldDescription>
+                    {(passwordRef.current?.value || pwScore > 0) && (
+                        <StrengthBar score={pwScore} />
+                    )}
+                    <FieldMessage status={passwordStatus} />
                 </Field>
 
+                {/* Confirm Password */}
                 <Field>
                     <FieldLabel htmlFor="confirm-password">
                         Confirm Password
@@ -145,17 +289,21 @@ export function SignupForm({
                         name="confirm-password"
                         type="password"
                         required
-                        className="bg-background"
-                        ref={confirmPassword}
+                        ref={confirmPasswordRef}
+                        className={cn(
+                            "bg-background",
+                            confirmStatus.state === "error" &&
+                                "border-destructive focus-visible:ring-destructive",
+                        )}
+                        onChange={(e) => validateConfirm(e.target.value)}
                     />
-                    <FieldDescription>
-                        Please confirm your password.
-                    </FieldDescription>
-
-                    {error && (
-                        <p className="text-sm text-destructive mt-1">{error}</p>
-                    )}
+                    <FieldMessage status={confirmStatus} />
                 </Field>
+
+                {/* Submit error */}
+                {submitError && (
+                    <p className="text-sm text-destructive -mt-2">{submitError}</p>
+                )}
 
                 <Field>
                     <Button onClick={signUpEmail} disabled={loading}>
