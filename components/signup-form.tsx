@@ -24,7 +24,6 @@ interface FieldStatus {
     message: string;
 }
 
-
 function getCharsetSize(pw: string): number {
     let size = 0;
     if (/[a-z]/.test(pw)) size += 26;
@@ -120,7 +119,8 @@ export function SignupForm({
         } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
             setUsernameStatus({
                 state: "error",
-                message: "3–20 characters, letters, numbers, or underscores only.",
+                message:
+                    "3–20 characters, letters, numbers, or underscores only.",
             });
         } else {
             setUsernameStatus({ state: "valid", message: "" });
