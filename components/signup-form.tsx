@@ -273,9 +273,9 @@ export function SignupForm({
                         )}
                         onChange={(e) => validatePassword(e.target.value)}
                     />
-                    {(passwordRef.current?.value || pwScore > 0) && (
+                    {pwScore > 0 && (
                         <StrengthBar score={pwScore} />
-                    )}
+                )}
                     <FieldMessage status={passwordStatus} />
                 </Field>
 
