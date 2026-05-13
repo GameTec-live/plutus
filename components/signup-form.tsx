@@ -189,12 +189,25 @@ export function SignupForm({
         (passwordRef.current?.value.length ?? 0) >= 8;
 
     const signUpEmail = async () => {
-        validateUsername(nameRef.current?.value ?? "");
-        validateEmail(emailRef.current?.value ?? "");
-        validatePassword(passwordRef.current?.value ?? "");
-        validateConfirm(confirmPasswordRef.current?.value ?? "");
+        const name = nameRef.current?.value ?? "";
+        const email = emailRef.current?.value ?? "";
+        const password = passwordRef.current?.value ?? "";
+        const confirm = confirmPasswordRef.current?.value ?? "";
 
-        if (!isFormValid()) return;
+        validateUsername(name);
+        validateEmail(email);
+        validatePassword(password);
+        validateConfirm(confirm);
+
+        // Compute validity synchronously against current values — React state
+        // updates above are batched and won't be visible until the next render.
+        const isValid =
+            /^[a-zA-Z0-9_]{3,20}$/.test(name) &&
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
+            password.length >= 8 &&
+            password === confirm;
+
+        if (!isValid) return;
 
         setSubmitError(null);
 
