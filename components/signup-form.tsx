@@ -182,7 +182,7 @@ export function SignupForm({
         }
     };
 
-    const isFormValid = () =>
+    const _isFormValid = () =>
         usernameStatus.state === "valid" &&
         emailStatus.state === "valid" &&
         confirmStatus.state === "valid" &&
