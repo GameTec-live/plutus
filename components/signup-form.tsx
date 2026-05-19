@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import type * as React from "react";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -75,6 +75,7 @@ export function SignupForm({
     const [loading, setLoading] = useState(false);
     const [pwScore, setPwScore] = useState(0);
     const [pwStrengthLabel, setPwStrengthLabel] = useState("");
+    const router = useRouter();
 
     const [confirmError, setConfirmError] = useState<string | null>(null);
 
@@ -135,7 +136,7 @@ export function SignupForm({
                 onRequest: () => setLoading(true),
                 onSuccess: () => {
                     setLoading(false);
-                    redirect("/onboarding");
+                    router.push("/onboarding");
                 },
                 onError: (ctx) => {
                     if (ctx.error.message.includes("[body.email]")) {
