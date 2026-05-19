@@ -1,0 +1,33 @@
+services:
+  web:
+    container_name: plutus-web
+    build: .
+    environment:
+      DATABASE_URL: postgres://plutus_user:securepassword@db:5432/plutus_db
+      BETTER_AUTH_SECRET: YOURBETTERAUTHSECRET # https://www.better-auth.com/docs/installation#set-environment-variables
+      BETTER_AUTH_URL: http://localhost:3000 # The final URL where the app is hosted
+      MICROSOFT_CLIENT_ID: MSID # alternatively use GitHub
+      MICROSOFT_CLIENT_SECRET: MSSECRET
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    container_name: plutus-db
+    image: postgres:18
+    environment:
+      POSTGRES_USER: plutus_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: plutus_db
+    volumes:
+      - plutus-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U plutus_user -d plutus_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  plutus-db-data:

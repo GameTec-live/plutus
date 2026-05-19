@@ -22,4 +22,16 @@ export const auth = betterAuth({
         ],
         protocol: process.env.NODE_ENV === "development" ? "http" : "https",
     },
+    user: {
+        additionalFields: {
+            bannerImage: {
+                type: "string",
+                required: false,
+            },
+            bio: {
+                type: "string",
+                required: false,
+            },
+        },
+    },
 });

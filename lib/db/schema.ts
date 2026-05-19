@@ -1,5 +1,13 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+    boolean,
+    index,
+    numeric,
+    pgTable,
+    text,
+    timestamp,
+    uuid,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
@@ -12,6 +20,8 @@ export const user = pgTable("user", {
         .defaultNow()
         .$onUpdate(() => /* @__PURE__ */ new Date())
         .notNull(),
+    bannerImage: text("banner_image"),
+    bio: text("bio"),
 });
 
 export const session = pgTable(
@@ -76,6 +86,7 @@ export const verification = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
     accounts: many(account),
+    projects: many(project),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -89,5 +100,74 @@ export const accountRelations = relations(account, ({ one }) => ({
     user: one(user, {
         fields: [account.userId],
         references: [user.id],
+    }),
+}));
+
+export const project = pgTable("project", {
+    id: uuid().primaryKey().defaultRandom(),
+    title: text().notNull(),
+    shortDescription: text().notNull(),
+    longDescription: text(),
+    openCollectiveID: text(),
+    creator: text()
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+        .defaultNow()
+        .$onUpdate(() => /* @__PURE__ */ new Date())
+        .notNull(),
+});
+
+export const projectRelations = relations(project, ({ one, many }) => ({
+    creator: one(user, {
+        fields: [project.creator],
+        references: [user.id],
+    }),
+    images: many(projectImage),
+    goals: many(projectGoal),
+}));
+
+export const projectImage = pgTable("project_image", {
+    id: uuid().primaryKey().defaultRandom(),
+    projectId: uuid()
+        .notNull()
+        .references(() => project.id, { onDelete: "cascade" }),
+    primary: boolean().default(false).notNull(),
+    url: text().notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+        .defaultNow()
+        .$onUpdate(() => /* @__PURE__ */ new Date())
+        .notNull(),
+});
+
+export const projectImageRelations = relations(projectImage, ({ one }) => ({
+    project: one(project, {
+        fields: [projectImage.projectId],
+        references: [project.id],
+    }),
+}));
+
+export const projectGoal = pgTable("project_goal", {
+    id: uuid().primaryKey().defaultRandom(),
+    projectId: uuid()
+        .notNull()
+        .references(() => project.id, { onDelete: "cascade" }),
+    title: text(),
+    amount: numeric().notNull(),
+    isStretch: boolean().default(false).notNull(),
+    isPrimary: boolean(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+        .defaultNow()
+        .$onUpdate(() => /* @__PURE__ */ new Date())
+        .notNull(),
+});
+
+export const projectGoalRelations = relations(projectGoal, ({ one }) => ({
+    project: one(project, {
+        fields: [projectGoal.projectId],
+        references: [project.id],
     }),
 }));
