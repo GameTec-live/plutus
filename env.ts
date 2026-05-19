@@ -9,8 +9,7 @@ export const env = createEnv({
         DATABASE_URL: z.string().min(1),
 
         MEILI_INDEX: z.string().min(1),
-        MEILI_MANAGE_KEY: z.string().min(1),
-        MEILI_MASTER_KEY: z.string().min(1).nullish(),
+        MEILI_MASTER_KEY: z.string().min(1),
         MEILI_SEARCH_KEY: z.string().min(1),
         MEILI_URL: z.url(),
 
