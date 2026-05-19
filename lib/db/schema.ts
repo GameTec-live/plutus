@@ -1,8 +1,9 @@
+import { table } from "console";
 import { relations } from "drizzle-orm";
 import {
+    bigint,
     boolean,
     index,
-    numeric,
     pgTable,
     text,
     timestamp,
@@ -103,21 +104,25 @@ export const accountRelations = relations(account, ({ one }) => ({
     }),
 }));
 
-export const project = pgTable("project", {
-    id: uuid().primaryKey().defaultRandom(),
-    title: text().notNull(),
-    shortDescription: text().notNull(),
-    longDescription: text(),
-    openCollectiveID: text(),
-    creator: text()
-        .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
-        .defaultNow()
-        .$onUpdate(() => /* @__PURE__ */ new Date())
-        .notNull(),
-});
+export const project = pgTable(
+    "project",
+    {
+        id: uuid().primaryKey().defaultRandom(),
+        title: text().notNull(),
+        shortDescription: text().notNull(),
+        longDescription: text(),
+        openCollectiveID: text(),
+        creator: text()
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at")
+            .defaultNow()
+            .$onUpdate(() => /* @__PURE__ */ new Date())
+            .notNull(),
+    },
+    (table) => [index("project_creator_idx").on(table.creator)],
+);
 
 export const projectRelations = relations(project, ({ one, many }) => ({
     creator: one(user, {
@@ -128,19 +133,23 @@ export const projectRelations = relations(project, ({ one, many }) => ({
     goals: many(projectGoal),
 }));
 
-export const projectImage = pgTable("project_image", {
-    id: uuid().primaryKey().defaultRandom(),
-    projectId: uuid()
-        .notNull()
-        .references(() => project.id, { onDelete: "cascade" }),
-    primary: boolean().default(false).notNull(),
-    url: text().notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
-        .defaultNow()
-        .$onUpdate(() => /* @__PURE__ */ new Date())
-        .notNull(),
-});
+export const projectImage = pgTable(
+    "project_image",
+    {
+        id: uuid().primaryKey().defaultRandom(),
+        projectId: uuid()
+            .notNull()
+            .references(() => project.id, { onDelete: "cascade" }),
+        primary: boolean().default(false).notNull(),
+        url: text().notNull(),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at")
+            .defaultNow()
+            .$onUpdate(() => /* @__PURE__ */ new Date())
+            .notNull(),
+    },
+    (table) => [index("project_image_projectId_idx").on(table.projectId)],
+);
 
 export const projectImageRelations = relations(projectImage, ({ one }) => ({
     project: one(project, {
@@ -149,21 +158,25 @@ export const projectImageRelations = relations(projectImage, ({ one }) => ({
     }),
 }));
 
-export const projectGoal = pgTable("project_goal", {
-    id: uuid().primaryKey().defaultRandom(),
-    projectId: uuid()
-        .notNull()
-        .references(() => project.id, { onDelete: "cascade" }),
-    title: text(),
-    amount: numeric().notNull(),
-    isStretch: boolean().default(false).notNull(),
-    isPrimary: boolean(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
-        .defaultNow()
-        .$onUpdate(() => /* @__PURE__ */ new Date())
-        .notNull(),
-});
+export const projectGoal = pgTable(
+    "project_goal",
+    {
+        id: uuid().primaryKey().defaultRandom(),
+        projectId: uuid()
+            .notNull()
+            .references(() => project.id, { onDelete: "cascade" }),
+        title: text(),
+        amount: bigint({ mode: "number" }).notNull(), // amount in cents
+        isStretch: boolean().default(false).notNull(),
+        isPrimary: boolean(),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at")
+            .defaultNow()
+            .$onUpdate(() => /* @__PURE__ */ new Date())
+            .notNull(),
+    },
+    (table) => [index("project_goal_projectId_idx").on(table.projectId)],
+);
 
 export const projectGoalRelations = relations(projectGoal, ({ one }) => ({
     project: one(project, {

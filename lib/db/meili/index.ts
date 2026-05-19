@@ -6,12 +6,17 @@ export const meili = new Meilisearch({
     apiKey: env.MEILI_MASTER_KEY,
 });
 
-meili.index(env.MEILI_INDEX).updateSettings({
-    searchableAttributes: [
-        "id",
-        "title",
-        "shortDescription",
-        "longDescription",
-        "creator",
-    ],
-});
+meili
+    .index(env.MEILI_INDEX)
+    .updateSettings({
+        searchableAttributes: [
+            "id",
+            "title",
+            "shortDescription",
+            "longDescription",
+            "creator",
+        ],
+    })
+    .catch((err) => {
+        console.error("Failed to update MeiliSearch settings:", err);
+    });

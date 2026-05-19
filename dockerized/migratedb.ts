@@ -7,7 +7,7 @@ async function migrateDB() {
     console.log("Migrations complete.");
 }
 
-migrateDB()
+await migrateDB()
     .then(() => {
         console.log("Database is up to date.");
     })
