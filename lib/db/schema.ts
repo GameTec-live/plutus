@@ -124,7 +124,7 @@ export const project = pgTable(
 );
 
 export const projectRelations = relations(project, ({ one, many }) => ({
-    creator: one(user, {
+    creatorUser: one(user, {
         fields: [project.creator],
         references: [user.id],
     }),
