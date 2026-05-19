@@ -6,6 +6,20 @@ services:
       DATABASE_URL: postgres://plutus_user:securepassword@db:5432/plutus_db
       BETTER_AUTH_SECRET: YOURBETTERAUTHSECRET # https://www.better-auth.com/docs/installation#set-environment-variables
       BETTER_AUTH_URL: http://localhost:3000 # The final URL where the app is hosted
+      MEILI_INDEX: plutus
+      MEILI_MANAGE_KEY: masterKey
+      MEILI_MASTER_KEY: masterKey
+      MEILI_SEARCH_KEY: searchKey
+      MEILI_URL: http://meili:7700
+      NEXT_PUBLIC_MEILI_INDEX: plutus
+      NEXT_PUBLIC_MEILI_SEARCH_KEY: searchKey
+      NEXT_PUBLIC_MEILI_URL: http://meili:7700
+      NEXT_PUBLIC_OPEN_COLLECTIVE_COLLECTIVE_CURRENCY: €
+      OPEN_COLLECTIVE_COLLECTIVE_CURRENCY: €
+      OPEN_COLLECTIVE_COLLECTIVE_URL: https://opencollective.com/yourcollectivehere
+      OPEN_COLLECTIVE_ENDPOINT: https://api.opencollective.com/graphql/v2
+      OPEN_COLLECTIVE_TOKEN: youropencollectivetokenhere
+
     ports:
       - "3000:3000"
     depends_on:
@@ -26,6 +40,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  meili:
+    container_name: plutus-meili
+    image: getmeili/meilisearch:latest
+    environment:
+      MEILI_MASTER_KEY: masterKey
 
 volumes:
   plutus-db-data:
