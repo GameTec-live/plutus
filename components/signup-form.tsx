@@ -17,13 +17,6 @@ import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
-type FieldState = "idle" | "valid" | "error";
-
-interface FieldStatus {
-    state: FieldState;
-    message: string;
-}
-
 function getCharsetSize(pw: string): number {
     let size = 0;
     if (/[a-z]/.test(pw)) size += 26;
@@ -34,28 +27,22 @@ function getCharsetSize(pw: string): number {
 }
 
 function getPasswordEntropy(pw: string): {
-    bits: number;
     label: string;
     score: number;
 } {
-    if (!pw) return { bits: 0, label: "", score: 0 };
-    const R = getCharsetSize(pw);
-    const L = pw.length;
-    const bits = Math.log2(R) * L;
+    if (!pw) return { label: "", score: 0 };
+    const bits = Math.log2(getCharsetSize(pw)) * pw.length;
 
-    if (bits < 28) return { bits, label: "Very weak", score: 1 };
-    if (bits < 36) return { bits, label: "Weak", score: 2 };
-    if (bits < 60) return { bits, label: "Fair", score: 3 };
-    if (bits < 128) return { bits, label: "Strong", score: 4 };
-    return { bits, label: "Very strong", score: 5 };
+    if (bits < 28) return { label: "Very weak", score: 1 };
+    if (bits < 36) return { label: "Weak", score: 2 };
+    if (bits < 60) return { label: "Fair", score: 3 };
+    if (bits < 128) return { label: "Strong", score: 4 };
+    return { label: "Very strong", score: 5 };
 }
 
-function FieldMessage({ status }: { status: FieldStatus }) {
-    if (status.state === "valid") return null;
-    if (status.state === "idle") {
-        return <FieldDescription>{status.message}</FieldDescription>;
-    }
-    return <p className="text-sm text-destructive mt-1">{status.message}</p>;
+function FieldError({ message }: { message: string | null }) {
+    if (!message) return null;
+    return <p className="text-sm text-destructive mt-1">{message}</p>;
 }
 
 function StrengthBar({ score }: { score: number }) {
@@ -87,135 +74,61 @@ export function SignupForm({
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [pwScore, setPwScore] = useState(0);
+    const [pwStrengthLabel, setPwStrengthLabel] = useState("");
 
-    const [usernameStatus, setUsernameStatus] = useState<FieldStatus>({
-        state: "idle",
-        message: "Letters, numbers, and underscores only.",
-    });
-    const [emailStatus, setEmailStatus] = useState<FieldStatus>({
-        state: "idle",
-        message: "We'll never share your email.",
-    });
-    const [passwordStatus, setPasswordStatus] = useState<FieldStatus>({
-        state: "idle",
-        message: "Must be at least 8 characters long.",
-    });
-    const [confirmStatus, setConfirmStatus] = useState<FieldStatus>({
-        state: "idle",
-        message: "Please confirm your password.",
-    });
+    const [confirmError, setConfirmError] = useState<string | null>(null);
 
     const nameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-    const validateUsername = (value: string) => {
-        if (!value) {
-            setUsernameStatus({
-                state: "idle",
-                message: "Letters, numbers, and underscores only.",
-            });
-        } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(value)) {
-            setUsernameStatus({
-                state: "error",
-                message:
-                    "3–20 characters, letters, numbers, or underscores only.",
-            });
-        } else {
-            setUsernameStatus({ state: "valid", message: "" });
-        }
-    };
-
-    const validateEmail = (value: string) => {
-        if (!value) {
-            setEmailStatus({
-                state: "idle",
-                message: "We'll never share your email.",
-            });
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            setEmailStatus({
-                state: "error",
-                message: "Enter a valid email address, e.g. you@example.com.",
-            });
-        } else {
-            setEmailStatus({ state: "valid", message: "" });
-        }
-    };
-
-    const validatePassword = (value: string) => {
+    const validatePasswordStrength = (value: string) => {
         const { label, score } = getPasswordEntropy(value);
         setPwScore(score);
-
-        if (!value) {
-            setPasswordStatus({
-                state: "idle",
-                message: "Must be at least 8 characters long.",
-            });
-        } else if (value.length < 8) {
-            setPasswordStatus({
-                state: "error",
-                message: "Too short, need at least 8 characters.",
-            });
-        } else {
-            setPasswordStatus({ state: "idle", message: `Strength: ${label}` });
-        }
-
-        const confirm = confirmPasswordRef.current?.value ?? "";
-        if (confirm) validateConfirm(confirm, value);
+        setPwStrengthLabel(label);
+        return true;
     };
 
     const validateConfirm = (value: string, pw?: string) => {
         const password = pw ?? passwordRef.current?.value ?? "";
-        if (!value) {
-            setConfirmStatus({
-                state: "idle",
-                message: "Please confirm your password.",
-            });
-        } else if (value !== password) {
-            setConfirmStatus({
-                state: "error",
-                message: "Passwords do not match.",
-            });
-        } else {
-            setConfirmStatus({ state: "valid", message: "" });
+        if (value !== password) {
+            setConfirmError("Passwords do not match.");
+            return false;
         }
+        setConfirmError(null);
+        return true;
     };
 
-    const _isFormValid = () =>
-        usernameStatus.state === "valid" &&
-        emailStatus.state === "valid" &&
-        confirmStatus.state === "valid" &&
-        (passwordRef.current?.value.length ?? 0) >= 8;
-
     const signUpEmail = async () => {
-        const name = nameRef.current?.value ?? "";
-        const email = emailRef.current?.value ?? "";
-        const password = passwordRef.current?.value ?? "";
-        const confirm = confirmPasswordRef.current?.value ?? "";
+        const confirmOk = validateConfirm(
+            confirmPasswordRef.current?.value ?? "",
+        );
 
-        validateUsername(name);
-        validateEmail(email);
-        validatePassword(password);
-        validateConfirm(confirm);
+        if (!nameRef.current?.value) {
+            setSubmitError("Please enter your username.");
+            return;
+        }
 
-        // Compute validity synchronously against current values — React state
-        // updates above are batched and won't be visible until the next render.
-        const isValid =
-            /^[a-zA-Z0-9_]{3,20}$/.test(name) &&
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
-            password.length >= 8 &&
-            password === confirm;
+        if (!emailRef.current?.value) {
+            setSubmitError("Please enter your email address.");
+            return;
+        }
 
-        if (!isValid) return;
+        if (!passwordRef.current?.value) {
+            setSubmitError("Please enter your password.");
+            return;
+        }
+
+        if (!confirmOk) return;
 
         setSubmitError(null);
 
         await authClient.signUp.email(
             {
-                email: emailRef.current?.value ?? "",
+                email: emailRef.current.value,
                 password: passwordRef.current?.value ?? "",
-                name: nameRef.current?.value ?? "",
+                name: nameRef.current.value,
                 callbackURL: "/",
             },
             {
@@ -225,6 +138,12 @@ export function SignupForm({
                     redirect("/onboarding");
                 },
                 onError: (ctx) => {
+                    if (ctx.error.message.includes("[body.email]")) {
+                        setSubmitError("Invalid email address.");
+                        setLoading(false);
+                        return;
+                    }
+
                     setSubmitError(ctx.error.message);
                     setLoading(false);
                 },
@@ -266,14 +185,8 @@ export function SignupForm({
                         placeholder="johndoe110"
                         required
                         ref={nameRef}
-                        className={cn(
-                            "bg-background",
-                            usernameStatus.state === "error" &&
-                                "border-destructive focus-visible:ring-destructive",
-                        )}
-                        onChange={(e) => validateUsername(e.target.value)}
+                        className="bg-background"
                     />
-                    <FieldMessage status={usernameStatus} />
                 </Field>
 
                 {/* Email */}
@@ -286,14 +199,11 @@ export function SignupForm({
                         placeholder="m@example.com"
                         required
                         ref={emailRef}
-                        className={cn(
-                            "bg-background",
-                            emailStatus.state === "error" &&
-                                "border-destructive focus-visible:ring-destructive",
-                        )}
-                        onChange={(e) => validateEmail(e.target.value)}
+                        className="bg-background"
                     />
-                    <FieldMessage status={emailStatus} />
+                    <FieldDescription>
+                        We&apos;ll never share your email with anyone else.
+                    </FieldDescription>
                 </Field>
 
                 {/* Password */}
@@ -305,15 +215,17 @@ export function SignupForm({
                         type="password"
                         required
                         ref={passwordRef}
-                        className={cn(
-                            "bg-background",
-                            passwordStatus.state === "error" &&
-                                "border-destructive focus-visible:ring-destructive",
-                        )}
-                        onChange={(e) => validatePassword(e.target.value)}
+                        className={cn("bg-background")}
+                        onChange={(e) =>
+                            validatePasswordStrength(e.target.value)
+                        }
                     />
                     {pwScore > 0 && <StrengthBar score={pwScore} />}
-                    <FieldMessage status={passwordStatus} />
+                    {pwScore > 0 && (
+                        <FieldDescription>
+                            Strength: {pwStrengthLabel}
+                        </FieldDescription>
+                    )}
                 </Field>
 
                 {/* Confirm Password */}
@@ -327,14 +239,10 @@ export function SignupForm({
                         type="password"
                         required
                         ref={confirmPasswordRef}
-                        className={cn(
-                            "bg-background",
-                            confirmStatus.state === "error" &&
-                                "border-destructive focus-visible:ring-destructive",
-                        )}
+                        className={cn("bg-background")}
                         onChange={(e) => validateConfirm(e.target.value)}
                     />
-                    <FieldMessage status={confirmStatus} />
+                    <FieldError message={confirmError} />
                 </Field>
 
                 {/* Submit error */}
