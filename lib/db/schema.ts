@@ -106,12 +106,12 @@ export const accountRelations = relations(account, ({ one }) => ({
 export const project = pgTable(
     "project",
     {
-        id: uuid().primaryKey().defaultRandom(),
-        title: text().notNull(),
-        shortDescription: text().notNull(),
-        longDescription: text(),
-        openCollectiveID: text(),
-        creator: text()
+        id: uuid("id").primaryKey().defaultRandom(),
+        title: text("title").notNull(),
+        shortDescription: text("short_description").notNull(),
+        longDescription: text("long_description"),
+        openCollectiveID: text("open_collective_id"),
+        creator: text("creator")
             .notNull()
             .references(() => user.id, { onDelete: "cascade" }),
         createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -135,12 +135,12 @@ export const projectRelations = relations(project, ({ one, many }) => ({
 export const projectImage = pgTable(
     "project_image",
     {
-        id: uuid().primaryKey().defaultRandom(),
-        projectId: uuid()
+        id: uuid("id").primaryKey().defaultRandom(),
+        projectId: uuid("project_id")
             .notNull()
             .references(() => project.id, { onDelete: "cascade" }),
-        primary: boolean().default(false).notNull(),
-        url: text().notNull(),
+        isPrimary: boolean("is_primary").default(false).notNull(),
+        url: text("url").notNull(),
         createdAt: timestamp("created_at").defaultNow().notNull(),
         updatedAt: timestamp("updated_at")
             .defaultNow()
@@ -160,14 +160,14 @@ export const projectImageRelations = relations(projectImage, ({ one }) => ({
 export const projectGoal = pgTable(
     "project_goal",
     {
-        id: uuid().primaryKey().defaultRandom(),
-        projectId: uuid()
+        id: uuid("id").primaryKey().defaultRandom(),
+        projectId: uuid("project_id")
             .notNull()
             .references(() => project.id, { onDelete: "cascade" }),
-        title: text(),
-        amount: bigint({ mode: "number" }).notNull(), // amount in cents
-        isStretch: boolean().default(false).notNull(),
-        isPrimary: boolean(),
+        title: text("title"),
+        amount: bigint("amount", { mode: "number" }).notNull(), // amount in cents
+        isStretch: boolean("is_stretch").default(false).notNull(),
+        isPrimary: boolean("is_primary"),
         createdAt: timestamp("created_at").defaultNow().notNull(),
         updatedAt: timestamp("updated_at")
             .defaultNow()
