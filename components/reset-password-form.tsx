@@ -75,7 +75,7 @@ export function ResetPasswordForm({ className }: React.ComponentProps<"form">) {
                         </p>
                     )}
 
-                    <Button onClick={resetPassword} disabled={loading}>
+                    <Button type="button" onClick={resetPassword} disabled={loading}>
                         {loading ? "Resetting password..." : "Reset Password"}
                     </Button>
                 </Field>
