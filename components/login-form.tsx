@@ -18,10 +18,10 @@ import { cn } from "@/lib/utils";
 export function LoginForm({ className }: React.ComponentProps<"form">) {
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
     const router = useRouter();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const sessionRef = useRef<HTMLInputElement>(null);
 
     const signIn = async () => {
         if (!emailRef.current?.value) {
@@ -41,7 +41,7 @@ export function LoginForm({ className }: React.ComponentProps<"form">) {
                 email: emailRef.current.value,
                 password: passwordRef.current?.value ?? "",
                 callbackURL: "/",
-                rememberMe: sessionRef.current?.checked ?? false,
+                rememberMe: rememberMe,
             },
             {
                 onRequest: () => setLoading(true),
@@ -118,7 +118,8 @@ export function LoginForm({ className }: React.ComponentProps<"form">) {
                         <Checkbox
                             id="session-checkbox"
                             name="session-checkbox"
-                            ref={sessionRef}
+                            checked={rememberMe}
+                            onCheckedChange={setRememberMe}
                         />
                         <FieldLabel htmlFor="session-checkbox">
                             Remember me
