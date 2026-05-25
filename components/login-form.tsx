@@ -134,7 +134,7 @@ export function LoginForm({ className }: React.ComponentProps<"form">) {
                         </p>
                     )}
 
-                    <Button onClick={signIn} disabled={loading}>
+                    <Button type="button" onClick={signIn} disabled={loading}>
                         {loading ? "Logging in..." : "Login"}
                     </Button>
                 </Field>
