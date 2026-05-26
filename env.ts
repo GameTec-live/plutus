@@ -12,8 +12,7 @@ export const env = createEnv({
         GITHUB_CLIENT_SECRET: z.string().min(1).nullish(),
 
         MEILI_INDEX: z.string().min(1),
-        MEILI_MANAGE_KEY: z.string().min(1),
-        MEILI_MASTER_KEY: z.string().min(1).nullish(),
+        MEILI_MASTER_KEY: z.string().min(1),
         MEILI_SEARCH_KEY: z.string().min(1),
         MEILI_URL: z.url(),
 

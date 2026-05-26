@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    cacheComponents: true,
     // transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"], // Uncomment when using standalone output
 };
 
