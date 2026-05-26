@@ -1,6 +1,5 @@
 "use client";
 
-//import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,7 @@ import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
-export function LoginForm({ className }: React.ComponentProps<"form">) {
+export function LoginForm({ className }: React.ComponentProps<"div">) {
     const [submitError, setSubmitError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
