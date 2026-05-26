@@ -1,15 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-    Field,
-    FieldDescription,
-    FieldGroup,
-    FieldLabel,
-    FieldSeparator,
-} from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -47,7 +42,7 @@ export function ResetPasswordForm({ className }: React.ComponentProps<"form">) {
     };
 
     return (
-        <form className={cn("flex flex-col gap-6", className)}>
+        <div className={cn("flex flex-col gap-6", className)}>
             <FieldGroup>
                 <div className="flex flex-col items-center gap-1 text-center">
                     <h1 className="text-2xl font-bold">Reset your password</h1>
@@ -75,25 +70,15 @@ export function ResetPasswordForm({ className }: React.ComponentProps<"form">) {
                         </p>
                     )}
 
-                    <Button type="button" onClick={resetPassword} disabled={loading}>
+                    <Button
+                        type="button"
+                        onClick={resetPassword}
+                        disabled={loading}
+                    >
                         {loading ? "Resetting password..." : "Reset Password"}
                     </Button>
                 </Field>
-
-                <FieldSeparator></FieldSeparator>
-
-                <Field>
-                    <FieldDescription className="text-center">
-                        Don&apos;t have an account?{" "}
-                        <a
-                            href="/signup"
-                            className="underline underline-offset-4"
-                        >
-                            Sign up
-                        </a>
-                    </FieldDescription>
-                </Field>
             </FieldGroup>
-        </form>
+        </div>
     );
 }
