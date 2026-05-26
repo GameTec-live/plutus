@@ -32,7 +32,7 @@ import { authClient } from "@/lib/auth-client";
 // ---- Schemas ----
 
 const usernameSchema = z.object({
-    username: z.string().min(2, "Username must be at least 2 characters."),
+    username: z.string().min(1, "Username must be at least 1 character."),
 });
 
 const emailSchema = z.object({
@@ -84,6 +84,8 @@ function Section({
 // ---- Username form ----
 
 function UsernameForm({ currentName }: { currentName: string }) {
+    const router = useRouter();
+
     const [serverError, setServerError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
@@ -98,10 +100,12 @@ function UsernameForm({ currentName }: { currentName: string }) {
             });
             if (error) {
                 setServerError(error.message ?? "Failed to update username.");
-            } else {
-                setSuccess(true);
-                form.reset();
+                return;
             }
+            setSuccess(true);
+            form.reset();
+
+            router.refresh();
         },
     });
 
@@ -603,7 +607,6 @@ function AvatarUpload({
                 />
             </div>
             <div className="flex flex-col gap-1">
-                <p>{name}</p>
                 {error && <p className="text-xs text-destructive">{error}</p>}
                 {success && (
                     <p className="text-xs text-green-600 dark:text-green-400">
