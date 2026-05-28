@@ -608,8 +608,8 @@ function AvatarUpload({
                     onChange={handleFile}
                 />
             </div>
-            <div className="flex flex-col gap-1">
-                <p className="-mt-2 text-2xl font-bold text-white tracking-tight">
+            <div className="flex flex-col gap-1 -mt-1">
+                <p className="text-lg font-semibold text-foreground leading-tight">
                     {name}
                 </p>
                 {error && <p className="text-xs text-destructive">{error}</p>}
@@ -639,13 +639,13 @@ export function SettingsForm({
             {/* Banner */}
             <div className="h-28 bg-gradient-to-r from-muted to-muted/60" />
 
-            {/* Avatar + delete row */}
-            <div className="px-6 pb-4 -mt-12 flex items-end justify-between">
+            {/* Avatar + delete row — stacks on mobile */}
+            <div className="px-4 sm:px-6 pb-4 -mt-12 flex flex-wrap items-end justify-between gap-3">
                 <AvatarUpload name={name} image={image} />
                 <DeleteAccountDialog />
             </div>
 
-            <div className="px-6 pb-8 space-y-8">
+            <div className="px-4 sm:px-6 pb-8 space-y-8">
                 <Separator />
 
                 {/* General */}

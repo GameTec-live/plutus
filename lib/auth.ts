@@ -29,6 +29,9 @@ export const auth = betterAuth({
         protocol: process.env.NODE_ENV === "development" ? "http" : "https",
     },
     user: {
+        changeEmail: {
+            enabled: true,
+        },
         additionalFields: {
             bannerImage: {
                 type: "string",
