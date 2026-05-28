@@ -278,7 +278,7 @@ export function SignupForm({
                                     fill="currentColor"
                                 />
                             </svg>
-                            SignIn with GitHub
+                            SignUp with GitHub
                         </Button>
                     )}
 
@@ -288,7 +288,7 @@ export function SignupForm({
                             type="button"
                             onClick={signInOIDC}
                         >
-                            SignIn with OIDC
+                            SignUp with OIDC
                         </Button>
                     )}
 
