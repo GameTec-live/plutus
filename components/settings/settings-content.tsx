@@ -17,11 +17,9 @@ export async function SettingsContent() {
 
     return (
         <div className="flex gap-6 items-start">
-            {/* Sidebar: hidden on mobile, shown on lg+ */}
-            <div className="hidden lg:block w-52 shrink-0">
+            <div className="hidden lg:block w-52 shrink-0 sticky top-20 self-start">
                 <SettingsSidebar name={name} image={image} />
             </div>
-            {/* Form: full width on mobile, fills remaining space on lg+ */}
             <div className="flex-1 min-w-0">
                 <SettingsForm name={name} email={email} image={image} />
             </div>

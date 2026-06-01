@@ -29,8 +29,6 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { authClient } from "@/lib/auth-client";
 
-// ---- Schemas ----
-
 const usernameSchema = z.object({
     username: z.string().min(1, "Username must be at least 1 character."),
 });
@@ -60,8 +58,6 @@ const deleteSchema = z.object({
     }),
 });
 
-// ---- Section wrapper ----
-
 function Section({
     id,
     title,
@@ -80,8 +76,6 @@ function Section({
         </section>
     );
 }
-
-// ---- Username form ----
 
 function UsernameForm({ currentName }: { currentName: string }) {
     const router = useRouter();
@@ -172,8 +166,6 @@ function UsernameForm({ currentName }: { currentName: string }) {
         </form>
     );
 }
-
-// ---- Email form ----
 
 function EmailForm({ currentEmail }: { currentEmail: string }) {
     const router = useRouter();
@@ -266,8 +258,6 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
         </form>
     );
 }
-
-// ---- Password form ----
 
 function PasswordForm() {
     const [serverError, setServerError] = useState<string | null>(null);
@@ -418,8 +408,6 @@ function PasswordForm() {
     );
 }
 
-// ---- Delete account dialog ----
-
 function DeleteAccountDialog() {
     const router = useRouter();
     const [open, setOpen] = useState(false);
@@ -522,8 +510,6 @@ function DeleteAccountDialog() {
     );
 }
 
-// ---- Avatar upload ----
-
 function AvatarUpload({
     name,
     image,
@@ -622,8 +608,6 @@ function AvatarUpload({
         </div>
     );
 }
-
-// ---- Main export ----
 
 export function SettingsForm({
     name,

@@ -32,6 +32,9 @@ export const auth = betterAuth({
         changeEmail: {
             enabled: true,
         },
+        deleteUser: {
+            enabled: true,
+        },
         additionalFields: {
             bannerImage: {
                 type: "string",
