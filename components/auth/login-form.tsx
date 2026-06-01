@@ -168,6 +168,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                                 />
                             </svg>
                             SignIn with GitHub
+                            Sign in with GitHub
                         </Button>
                     )}
 
@@ -177,7 +178,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                             type="button"
                             onClick={signInOIDC}
                         >
-                            SignIn with OIDC
+                            Sign in with OIDC
                         </Button>
                     )}
                 </Field>
