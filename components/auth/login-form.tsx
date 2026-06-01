@@ -167,7 +167,6 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                                     fill="currentColor"
                                 />
                             </svg>
-                            SignIn with GitHub
                             Sign in with GitHub
                         </Button>
                     )}
