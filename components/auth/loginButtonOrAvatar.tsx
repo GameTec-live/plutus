@@ -54,6 +54,7 @@ export default function LoginButtonOrAvatar() {
                 <MenuItem>
                     <Link
                         href="/dashboard"
+                        prefetch
                         className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                     >
                         Dashboard
@@ -62,6 +63,7 @@ export default function LoginButtonOrAvatar() {
                 <MenuItem>
                     <Link
                         href="/settings"
+                        prefetch
                         className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                     >
                         Settings
@@ -69,7 +71,8 @@ export default function LoginButtonOrAvatar() {
                 </MenuItem>
                 <MenuItem>
                     <Link
-                        href="/profile"
+                        href={`/user/${session.user.id}` || "/user"}
+                        prefetch
                         className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                     >
                         Profile

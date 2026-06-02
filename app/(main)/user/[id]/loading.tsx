@@ -1,7 +1,9 @@
+import { Spinner } from "@/components/ui/spinner";
+
 export default function Loading() {
     return (
-        <div>
-            <h1>Loading User Profile...</h1>
+        <div className="flex h-[80vh] w-full items-center justify-center">
+            <Spinner />
         </div>
     );
 }
