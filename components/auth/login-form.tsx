@@ -167,7 +167,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                                     fill="currentColor"
                                 />
                             </svg>
-                            SignUp with GitHub
+                            Sign in with GitHub
                         </Button>
                     )}
 
@@ -177,7 +177,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                             type="button"
                             onClick={signInOIDC}
                         >
-                            SignUp with OIDC
+                            Sign in with OIDC
                         </Button>
                     )}
                 </Field>
