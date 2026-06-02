@@ -1,11 +1,11 @@
-import { ComponentExample } from "@/components/component-example";
+import { Explore } from "@/components/explore";
 import Hero from "@/components/hero";
 
 export default function Page() {
     return (
         <>
             <Hero />
-            <ComponentExample id="explore" />
+            <Explore id="explore" />
         </>
     );
 }
