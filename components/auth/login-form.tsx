@@ -147,7 +147,10 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                     </Button>
                 </Field>
 
-                <FieldSeparator>Or continue with</FieldSeparator>
+                {(env.NEXT_PUBLIC_GITHUB_ENABLED ||
+                    env.NEXT_PUBLIC_OAUTH_ENABLED) && (
+                    <FieldSeparator>Or continue with</FieldSeparator>
+                )}
 
                 {/* GitHub */}
                 <Field>
