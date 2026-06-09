@@ -67,12 +67,7 @@ export const emailTailwindConfig = {
                 "4xl": "30px",
             },
             fontFamily: {
-                sans: [
-                    "Arial",
-                    "Helvetica Neue",
-                    "Helvetica",
-                    "sans-serif",
-                ],
+                sans: ["Arial", "Helvetica Neue", "Helvetica", "sans-serif"],
             },
         },
     },
