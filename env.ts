@@ -24,6 +24,11 @@ export const env = createEnv({
         OPEN_COLLECTIVE_COLLECTIVE_URL: z.url(),
         OPEN_COLLECTIVE_ENDPOINT: z.url(),
         OPEN_COLLECTIVE_TOKEN: z.string().min(1),
+
+        S3_BUCKETNAME: z.string().min(1),
+        S3_KEY: z.string().min(1),
+        S3_KEY_ID: z.string().min(1),
+        S3_REGION: z.string().min(1),
     },
     client: {
         NEXT_PUBLIC_GITHUB_ENABLED: z.stringbool().default(false),
