@@ -2,7 +2,7 @@ import { pixelBasedPreset, type TailwindConfig } from "@react-email/components";
 
 export const emailTailwindConfig = {
     presets: [pixelBasedPreset],
-    darkMode: "class",
+    darkMode: "media",
     theme: {
         extend: {
             colors: {
