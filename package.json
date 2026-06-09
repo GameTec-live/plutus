@@ -8,13 +8,16 @@
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
-        "types": "tsc --pretty --noEmit"
+        "types": "tsc --pretty --noEmit",
+        "email:dev": "email dev --dir ./lib/emails"
     },
     "dependencies": {
         "@apollo/client": "^4.2.0",
         "@base-ui/react": "^1.5.0",
         "@headlessui/react": "^2.2.10",
         "@neondatabase/serverless": "^1.1.0",
+        "@react-email/components": "^1.0.12",
+        "@react-email/render": "^2.0.8",
         "@t3-oss/env-nextjs": "^0.13.11",
         "better-auth": "^1.6.11",
         "class-variance-authority": "^0.7.1",
@@ -28,6 +31,8 @@
         "next-themes": "^0.4.6",
         "react": "19.2.5",
         "react-dom": "19.2.5",
+        "react-email": "6.5.0",
+        "resend": "^6.12.4",
         "rxjs": "^7.8.2",
         "shadcn": "^4.8.0",
         "tailwind-merge": "^3.6.0",
@@ -36,6 +41,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "2.4.11",
+        "@react-email/ui": "6.5.0",
         "@tailwindcss/postcss": "^4.3.0",
         "@types/node": "^20.19.41",
         "@types/react": "^19.2.15",

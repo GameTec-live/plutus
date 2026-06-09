@@ -4,6 +4,8 @@ import { genericOAuth } from "better-auth/plugins";
 import { env } from "@/env";
 import * as schema from "@/lib/db/schema";
 import { db } from ".";
+import { resend } from "./emails";
+import { PasswordResetEmail } from "./emails/password-reset-email";
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -12,10 +14,23 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
-        sendResetPassword: async ({ user, url, token }) => {
-            // TODO: Implement email sending
-            // For now, log the reset URL for development
-            console.log(`Password reset link for ${user.email}: ${url}`);
+        sendResetPassword: async ({ user, url }) => {
+            if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) {
+                console.log("E-Mail api not configured");
+                throw new Error("E-Mail api not configured");
+            }
+
+            const { data, error } = await resend.emails.send({
+                from: env.RESEND_FROM_EMAIL,
+                to: [user.email],
+                subject: "Reset your password",
+                react: PasswordResetEmail({ url }),
+            });
+            if (error) {
+                console.error("Failed to send password reset email:", error);
+                throw new Error("Failed to send password reset email");
+            }
+            console.log("Password reset email sent:", data);
         },
     },
     baseURL: {
