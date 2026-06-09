@@ -15,6 +15,11 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         sendResetPassword: async ({ user, url }) => {
+            if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) {
+                console.log("E-Mail api not configured");
+                throw new Error("E-Mail api not configured");
+            }
+
             const { data, error } = await resend.emails.send({
                 from: env.RESEND_FROM_EMAIL,
                 to: [user.email],

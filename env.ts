@@ -25,8 +25,8 @@ export const env = createEnv({
         OPEN_COLLECTIVE_ENDPOINT: z.url(),
         OPEN_COLLECTIVE_TOKEN: z.string().min(1),
 
-        RESEND_API_KEY: z.string().min(1),
-        RESEND_FROM_EMAIL: z.email(),
+        RESEND_API_KEY: z.string().min(1).nullish(),
+        RESEND_FROM_EMAIL: z.email().nullish(),
         RESEND_BASE_URL: z.url().nullish(),
     },
     client: {
