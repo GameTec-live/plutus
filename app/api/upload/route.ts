@@ -9,7 +9,7 @@ const router: Router = {
     client: s3, // or cloudflare(), backblaze(), tigris(), ...
     bucketName: env.S3_BUCKETNAME,
     routes: {
-        profile: route({
+        banner: route({
             fileTypes: ["image/*"],
             onBeforeUpload: async () => {
                 const session = await auth.api.getSession({
@@ -17,7 +17,20 @@ const router: Router = {
                 });
 
                 if (!session) {
-                    throw new RejectUpload("Not logged in!");
+                    throw new RejectUpload("unauthorized");
+                }
+            },
+        }),
+        projectImages: route({
+            fileTypes: ["image/*"],
+            multipleFiles: true,
+            onBeforeUpload: async () => {
+                const session = await auth.api.getSession({
+                    headers: await headers(),
+                });
+
+                if (!session) {
+                    throw new RejectUpload("unauthorized");
                 }
             },
         }),

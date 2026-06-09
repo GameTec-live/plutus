@@ -5,7 +5,7 @@ import { UploadDropzone } from "@/components/ui/upload-dropzone";
 
 export function DropZoneUploader() {
     const { control } = useUploadFiles({
-        route: "images",
+        route: "projectImages",
     });
 
     return (
@@ -13,7 +13,6 @@ export function DropZoneUploader() {
             control={control}
             accept="image/*"
             description={{
-                maxFiles: 4,
                 maxFileSize: "5MB",
                 fileTypes: "JPEG, PNG, GIF",
             }}

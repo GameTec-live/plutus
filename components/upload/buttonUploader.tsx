@@ -5,7 +5,7 @@ import { UploadButton } from "@/components/ui/upload-button";
 
 export function ButtonUploader() {
     const { control } = useUploadFile({
-        route: "profile",
+        route: "banner",
     });
 
     return <UploadButton control={control} accept="image/*" />;
