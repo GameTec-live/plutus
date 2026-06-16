@@ -22,12 +22,6 @@ const router: Router = {
             },
 
             onAfterSignedUrl: async ({ file }) => {
-                const session = await auth.api.getSession({
-                    headers: await headers(),
-                });
-
-                if (!session) return;
-
                 const url = `${env.S3_PUBLIC_URL}/${file.objectInfo.key}`;
 
                 await auth.api.updateUser({
