@@ -1,5 +1,6 @@
 import { RejectUpload, type Router, route } from "@better-upload/server";
 import { toRouteHandler } from "@better-upload/server/adapters/next";
+import { Console } from "console";
 import { headers } from "next/headers";
 import { env } from "@/env";
 import { auth } from "@/lib/auth";
@@ -20,6 +21,10 @@ const router: Router = {
                     throw new RejectUpload("unauthorized");
                 }
             },
+
+            onAfterSignedUrl: async ({ file }) => {
+                console.log(file.objectInfo.key);
+            },
         }),
         projectImages: route({
             fileTypes: ["image/*"],
@@ -31,6 +36,13 @@ const router: Router = {
 
                 if (!session) {
                     throw new RejectUpload("unauthorized");
+                }
+            },
+
+            onAfterSignedUrl: async ({ files }) => {
+                // the files now have the objectInfo property
+                for (const file of files) {
+                    console.log("File uploaded:", file.objectInfo.key);
                 }
             },
         }),
