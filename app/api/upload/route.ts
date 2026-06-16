@@ -53,6 +53,7 @@ const router: Router = {
 
             onAfterSignedUrl: async ({ files }) => {
                 for (const file of files) {
+                    // TODO: save file to DB (ProjectImages)
                     console.log("File uploaded:", file.objectInfo.key);
                 }
             },
