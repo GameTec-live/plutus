@@ -1,13 +1,12 @@
 import { RejectUpload, type Router, route } from "@better-upload/server";
 import { toRouteHandler } from "@better-upload/server/adapters/next";
-import { Console } from "console";
 import { headers } from "next/headers";
 import { env } from "@/env";
 import { auth } from "@/lib/auth";
 import { s3 } from "@/lib/s3";
 
 const router: Router = {
-    client: s3, // or cloudflare(), backblaze(), tigris(), ...
+    client: s3,
     bucketName: env.S3_BUCKETNAME,
     routes: {
         banner: route({
@@ -23,7 +22,20 @@ const router: Router = {
             },
 
             onAfterSignedUrl: async ({ file }) => {
-                console.log(file.objectInfo.key);
+                const session = await auth.api.getSession({
+                    headers: await headers(),
+                });
+
+                if (!session) return;
+
+                const url = `${env.S3_PUBLIC_URL}/${file.objectInfo.key}`;
+
+                await auth.api.updateUser({
+                    headers: await headers(),
+                    body: {
+                        bannerImage: url,
+                    },
+                });
             },
         }),
         projectImages: route({
@@ -40,7 +52,6 @@ const router: Router = {
             },
 
             onAfterSignedUrl: async ({ files }) => {
-                // the files now have the objectInfo property
                 for (const file of files) {
                     console.log("File uploaded:", file.objectInfo.key);
                 }

@@ -29,6 +29,7 @@ export const env = createEnv({
         S3_KEY: z.string().min(1),
         S3_KEY_ID: z.string().min(1),
         S3_REGION: z.string().min(1),
+        S3_PUBLIC_URL: z.string().min(1),
     },
     client: {
         NEXT_PUBLIC_GITHUB_ENABLED: z.stringbool().default(false),
