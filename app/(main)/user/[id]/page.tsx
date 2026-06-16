@@ -15,7 +15,7 @@ export default async function UserProfilePage({
         <div className="flex flex-col mx-4 md:mx-16">
             <div className="mt-8 flex flex-col items-end">
                 <Image
-                    src={user.bannerImage || "/images/default-banner.jpg"}
+                    src={user.bannerImage || "/images/default-banner.png"}
                     alt="User Banner"
                     width={1920}
                     height={1080}
