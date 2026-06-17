@@ -25,11 +25,18 @@ export const env = createEnv({
         OPEN_COLLECTIVE_ENDPOINT: z.url(),
         OPEN_COLLECTIVE_TOKEN: z.string().min(1),
 
+        S3_CLIENT: z.enum(["cloudflare", "backblaze", "custom"]),
+
+        S3_ACCESS_KEY_ID: z.string().min(1).optional(),
+        S3_ACCOUNT_ID: z.string().min(1).optional(),
         S3_BUCKETNAME: z.string().min(1),
-        S3_KEY: z.string().min(1),
-        S3_KEY_ID: z.string().min(1),
-        S3_REGION: z.string().min(1),
-        S3_PUBLIC_URL: z.string().min(1),
+        S3_HOST: z.string().min(1).optional(),
+        S3_KEY: z.string().min(1).optional(),
+        S3_KEY_ID: z.string().min(1).optional(),
+        S3_PUBLIC_URL: z.string().min(1).optional(),
+        S3_REGION: z.string().min(1).optional(),
+        S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+
         RESEND_API_KEY: z.string().min(1).nullish(),
         RESEND_FROM_EMAIL: z.email().nullish(),
         RESEND_BASE_URL: z.url().nullish(),
