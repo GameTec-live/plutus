@@ -36,6 +36,7 @@ export const env = createEnv({
         S3_PUBLIC_URL: z.string().min(1),
         S3_REGION: z.string().min(1).nullish(),
         S3_SECRET_ACCESS_KEY: z.string().min(1).nullish(),
+
         RESEND_API_KEY: z.string().min(1).nullish(),
         RESEND_FROM_EMAIL: z.email().nullish(),
         RESEND_BASE_URL: z.url().nullish(),
