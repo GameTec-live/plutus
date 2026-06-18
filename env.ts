@@ -33,7 +33,7 @@ export const env = createEnv({
         S3_HOST: z.string().min(1).optional(),
         S3_KEY: z.string().min(1).optional(),
         S3_KEY_ID: z.string().min(1).optional(),
-        S3_PUBLIC_URL: z.string().min(1).optional(),
+        S3_PUBLIC_URL: z.string().min(1),
         S3_REGION: z.string().min(1).optional(),
         S3_SECRET_ACCESS_KEY: z.string().min(1).optional(),
 
