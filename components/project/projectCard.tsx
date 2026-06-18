@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Progress } from "@/components/ui/progress";
-import type { Project } from "@/lib/db/queries/project";
+import type { Project } from "@/lib/connected-db-oc/project";
 
 export function ProjectCard({ project }: { project: Project }) {
     return (
@@ -35,9 +35,11 @@ export function ProjectCard({ project }: { project: Project }) {
                 <Field className="w-full max-w-sm">
                     <FieldLabel htmlFor="progress-upload">
                         <span> Funding progress</span>
-                        <span className="ml-auto">{69}€</span>
+                        <span className="ml-auto">
+                            {project.balance} {project.currency}
+                        </span>
                     </FieldLabel>
-                    <Progress value={69} id="progress-upload" />
+                    <Progress value={project.balance} id="progress-upload" />
                 </Field>
             </CardFooter>
         </Card>
