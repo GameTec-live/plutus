@@ -1,5 +1,6 @@
 import { RejectUpload, type Router, route } from "@better-upload/server";
 import { toRouteHandler } from "@better-upload/server/adapters/next";
+import { deleteObject } from "@better-upload/server/helpers";
 import { headers } from "next/headers";
 import { env } from "@/env";
 import { auth } from "@/lib/auth";
@@ -22,6 +23,13 @@ const router: Router = {
             },
 
             onAfterSignedUrl: async ({ file }) => {
+                const session = await auth.api.getSession({
+                    headers: await headers(),
+                });
+
+                if (!session) return;
+
+                const currentBanner = session.user.bannerImage;
                 const url = `${env.S3_PUBLIC_URL}/${file.objectInfo.key}`;
 
                 await auth.api.updateUser({
@@ -30,6 +38,16 @@ const router: Router = {
                         bannerImage: url,
                     },
                 });
+
+                if (currentBanner) {
+                    try {
+                        const oldKey = currentBanner.split("/").slice(-1)[0];
+                        await deleteObject(s3, {
+                            bucket: env.S3_BUCKETNAME,
+                            key: oldKey,
+                        });
+                    } catch {}
+                }
             },
         }),
         projectImages: route({

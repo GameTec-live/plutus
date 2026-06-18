@@ -95,7 +95,7 @@ export function AvatarUpload({
                 {error && <p className="text-xs text-destructive">{error}</p>}
                 {success && (
                     <p className="text-xs text-green-600 dark:text-green-400">
-                        Avatar updated.
+                        Avatar updated
                     </p>
                 )}
             </div>
