@@ -34,9 +34,14 @@ export const s3 = (() => {
             });
 
         case "custom":
-            if (!env.S3_HOST) {
+            if (
+                !env.S3_HOST ||
+                !env.S3_ACCESS_KEY_ID ||
+                !env.S3_SECRET_ACCESS_KEY ||
+                !env.S3_REGION
+            ) {
                 throw new Error(
-                    "Missing S3_HOST for custom S3 client. Please set S3_HOST in your environment variables.",
+                    "Missing S3 credentials for custom S3 client. Please set S3_HOST, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, and S3_REGION in your environment variables.",
                 );
             }
 
