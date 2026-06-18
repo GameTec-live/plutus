@@ -14,6 +14,8 @@
     "dependencies": {
         "@apollo/client": "^4.2.0",
         "@base-ui/react": "^1.5.0",
+        "@better-upload/client": "^3.0.19",
+        "@better-upload/server": "^3.0.19",
         "@headlessui/react": "^2.2.10",
         "@neondatabase/serverless": "^1.1.0",
         "@react-email/components": "^1.0.12",
@@ -25,14 +27,18 @@
         "dotenv": "^17.4.2",
         "drizzle-orm": "^0.45.2",
         "graphql": "^16.14.0",
-        "lucide-react": "^1.16.0",
+        "lucide-react": "^1.17.0",
         "meilisearch": "^0.58.0",
         "next": "16.2.3",
         "next-themes": "^0.4.6",
         "react": "19.2.5",
         "react-dom": "19.2.5",
+
+        "react-dropzone": "^15.0.0",
+
         "react-email": "6.5.0",
         "resend": "^6.12.4",
+
         "rxjs": "^7.8.2",
         "shadcn": "^4.8.0",
         "tailwind-merge": "^3.6.0",
