@@ -1,7 +1,8 @@
 # Plutus
 
-> [!NOTE]
-> Logo will be added here soon along with the initial design of the platform.
+<p align="center">
+  <img src="./docs/logo.png" alt="Plutus logo" width="50%"/>
+</p>
 
 ## What is Plutus?
 
