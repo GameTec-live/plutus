@@ -61,10 +61,7 @@ export function EmailForm({ currentEmail }: { currentEmail: string }) {
                                     E-Mail
                                 </FieldLabel>
                                 <FieldDescription>
-                                    Current:{" "}
-                                    <span className="font-medium text-foreground">
-                                        {currentEmail}
-                                    </span>
+                                    {currentEmail}
                                 </FieldDescription>
                                 <div className="flex gap-2">
                                     <Input
@@ -84,7 +81,7 @@ export function EmailForm({ currentEmail }: { currentEmail: string }) {
                                         size="sm"
                                         className="shrink-0"
                                     >
-                                        Update
+                                        Save
                                     </Button>
                                 </div>
                                 {isInvalid && (

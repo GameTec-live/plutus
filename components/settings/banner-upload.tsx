@@ -3,7 +3,6 @@ import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
-import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
 export function BannerUpload({

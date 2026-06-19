@@ -28,7 +28,7 @@ export function SettingsForm({
             <BannerUpload currentBanner={bannerImage} />
 
             {/* Avatar + delete row — stacks on mobile */}
-            <div className="px-4 sm:px-6 pb-4 -mt-12 flex flex-wrap items-end justify-between gap-3">
+            <div className="px-4 sm:px-6 pt-2 pb-6 -mt-12 flex flex-wrap items-end justify-between gap-3">
                 <AvatarUpload name={name} image={image} />
                 <DeleteAccountDialog />
             </div>

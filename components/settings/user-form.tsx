@@ -60,10 +60,7 @@ export function UsernameForm({ currentName }: { currentName: string }) {
                                     Username
                                 </FieldLabel>
                                 <FieldDescription>
-                                    Current:{" "}
-                                    <span className="font-medium text-foreground">
-                                        {currentName}
-                                    </span>
+                                    {currentName}
                                 </FieldDescription>
                                 <div className="flex gap-2">
                                     <Input
