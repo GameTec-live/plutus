@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
 import { AvatarUpload } from "./avatar-upload";
+import { BannerUpload } from "./banner-upload";
 import { DeleteAccountDialog } from "./delete-account-dialog";
 import { EmailForm } from "./email-form";
 import { PasswordForm } from "./passwort-form";
@@ -14,15 +15,17 @@ export function SettingsForm({
     name,
     email,
     image,
+    bannerImage,
 }: {
     name: string;
     email: string;
     image?: string | null;
+    bannerImage?: string | null;
 }) {
     return (
         <div className="ring-foreground/10 bg-card text-card-foreground rounded-xl ring-1 overflow-hidden">
             {/* Banner */}
-            <div className="h-28 bg-linear-to-r from-muted to-muted/60" />
+            <BannerUpload currentBanner={bannerImage} />
 
             {/* Avatar + delete row — stacks on mobile */}
             <div className="px-4 sm:px-6 pb-4 -mt-12 flex flex-wrap items-end justify-between gap-3">

@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 import "./env";
+import { env } from "./env";
 
 const nextConfig: NextConfig = {
     /* config options here */
     images: {
         remotePatterns: [
+            new URL(`${env.S3_PUBLIC_URL}/**`),
             {
                 protocol: "https",
                 hostname: "images.unsplash.com",

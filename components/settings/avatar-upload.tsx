@@ -60,45 +60,45 @@ export function AvatarUpload({
     }
 
     return (
-        <div className="flex items-center gap-4">
-            <div className="relative group">
-                <Avatar className="size-20 ring-4 ring-card bg-muted">
-                    <AvatarImage
-                        src={preview ?? image ?? undefined}
-                        alt={name}
+        <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-4">
+                <div className="relative group">
+                    <Avatar className="size-20 ring-4 ring-card bg-muted">
+                        <AvatarImage
+                            src={preview ?? image ?? undefined}
+                            alt={name}
+                        />
+                        <AvatarFallback className="text-xl">
+                            {name.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                    </Avatar>
+                    <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={loading}
+                        className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                        aria-label="Change avatar"
+                    >
+                        <Upload className="size-5 text-white" />
+                    </button>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFile}
                     />
-                    <AvatarFallback className="text-xl">
-                        {name.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                </Avatar>
-                <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={loading}
-                    className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                    aria-label="Change avatar"
-                >
-                    <Upload className="size-5 text-white" />
-                </button>
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleFile}
-                />
-            </div>
-            <div className="flex flex-col gap-1 -mt-1">
+                </div>
                 <p className="text-lg font-semibold text-foreground leading-tight">
                     {name}
                 </p>
-                {error && <p className="text-xs text-destructive">{error}</p>}
-                {success && (
-                    <p className="text-xs text-green-600 dark:text-green-400">
-                        Avatar updated
-                    </p>
-                )}
             </div>
+            {error && <p className="text-xs text-destructive">{error}</p>}
+            {success && (
+                <p className="text-xs text-green-600 dark:text-green-400">
+                    Avatar updated
+                </p>
+            )}
         </div>
     );
 }

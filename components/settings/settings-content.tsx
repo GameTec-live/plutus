@@ -14,6 +14,7 @@ export async function SettingsContent() {
     }
 
     const { name, email, image } = session.user;
+    const bannerImage = session.user.bannerImage ?? null;
 
     return (
         <div className="flex gap-6 items-start">
@@ -21,7 +22,12 @@ export async function SettingsContent() {
                 <SettingsSidebar name={name} image={image} />
             </div>
             <div className="flex-1 min-w-0">
-                <SettingsForm name={name} email={email} image={image} />
+                <SettingsForm
+                    name={name}
+                    email={email}
+                    image={image}
+                    bannerImage={bannerImage}
+                />
             </div>
         </div>
     );
