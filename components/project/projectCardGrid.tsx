@@ -1,11 +1,36 @@
+import { Suspense } from "react";
 import { ProjectCard } from "@/components/project/projectCard";
-import type { projects } from "@/lib/connected-db-oc/project";
+import type {
+    Project,
+    ProjectPromiseEntry,
+} from "@/lib/connected-db-oc/project";
 
-export function ProjectCardGrid({ projects }: { projects: projects }) {
+function ProjectCardSkeleton() {
+    return (
+        <div className="rounded-3xl border border-border bg-muted/70 p-4 min-h-104" />
+    );
+}
+
+async function ProjectCardShell({
+    projectPromise,
+}: {
+    projectPromise: Promise<Project>;
+}) {
+    const project = await projectPromise;
+    return <ProjectCard project={project} />;
+}
+
+export function ProjectCardGrid({
+    projects,
+}: {
+    projects: ProjectPromiseEntry[];
+}) {
     return (
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 sm:px-8 lg:px-16">
             {projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <Suspense key={project.id} fallback={<ProjectCardSkeleton />}>
+                    <ProjectCardShell projectPromise={project.projectPromise} />
+                </Suspense>
             ))}
         </div>
     );
