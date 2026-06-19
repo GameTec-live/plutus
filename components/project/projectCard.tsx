@@ -33,13 +33,13 @@ export function ProjectCard({ project }: { project: Project }) {
             </CardHeader>
             <CardFooter className="relative z-20">
                 <Field className="w-full max-w-sm">
-                    <FieldLabel htmlFor="progress-upload">
+                    <FieldLabel htmlFor={`progress-${project.id}`}>
                         <span> Funding progress</span>
                         <span className="ml-auto">
                             {project.balance} {project.currency}
                         </span>
                     </FieldLabel>
-                    <Progress value={project.balance} id="progress-upload" />
+                    <Progress value={project.balance} id={`progress-${project.id}`} />
                 </Field>
             </CardFooter>
         </Card>
