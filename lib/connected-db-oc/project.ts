@@ -5,7 +5,7 @@ import { getProjectBalanceByProjectId } from "@/lib/oc/queries/project";
 export async function GetAllProjects() {
     "use cache";
     cacheLife("days");
-    cacheTag("projects");
+    cacheTag("project-listing");
 
     const dbProjects = await getDbAllProjects();
 
@@ -31,5 +31,5 @@ export async function GetAllProjects() {
     return projectsWithBalance;
 }
 
-export type GetAllProjects = Awaited<ReturnType<typeof GetAllProjects>>;
-export type Project = GetAllProjects[number];
+export type projects = Awaited<ReturnType<typeof GetAllProjects>>;
+export type Project = projects[number];

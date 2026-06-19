@@ -1,7 +1,7 @@
 import { ProjectCard } from "@/components/project/projectCard";
-import type { GetAllProjects } from "@/lib/connected-db-oc/project";
+import type { projects } from "@/lib/connected-db-oc/project";
 
-export function ProjectCardGrid({ projects }: { projects: GetAllProjects }) {
+export function ProjectCardGrid({ projects }: { projects: projects }) {
     return (
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 sm:px-8 lg:px-16">
             {projects.map((project) => (

@@ -35,7 +35,7 @@ const GET_PROJECT_BALANCE_BY_PROJECT_ID = gql`
 export async function getProjectBalanceByProjectId(projectId: string) {
     "use cache";
     cacheLife("days");
-    cacheTag("projectBalance");
+    cacheTag("projectBalance,project-listing");
     const result = await apolloClient.query<GetProjectBalanceByProjectIdResult>(
         {
             query: GET_PROJECT_BALANCE_BY_PROJECT_ID,
