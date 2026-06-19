@@ -39,7 +39,10 @@ export function ProjectCard({ project }: { project: Project }) {
                             {project.balance} {project.currency}
                         </span>
                     </FieldLabel>
-                    <Progress value={project.balance} id={`progress-${project.id}`} />
+                    <Progress
+                        value={project.balance}
+                        id={`progress-${project.id}`}
+                    />
                 </Field>
             </CardFooter>
         </Card>
