@@ -6,8 +6,11 @@ export async function GetAllProjects() {
 
     const projectsWithBalance = await Promise.all(
         dbProjects.map(async (project) => {
+            if (!project.openCollectiveID) {
+                return { ...project, balance: 0, currency: "€" };
+            }
             const balanceResult = await getProjectBalanceByProjectId(
-                project.openCollectiveID ?? "",
+                project.openCollectiveID,
             );
             const balance =
                 balanceResult.data?.project?.stats?.balance?.value ?? 0;
