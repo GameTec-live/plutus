@@ -1,7 +1,12 @@
+import { cacheLife, cacheTag } from "next/cache";
 import { getAllProjects as getDbAllProjects } from "@/lib/db/queries/project";
 import { getProjectBalanceByProjectId } from "@/lib/oc/queries/project";
 
 export async function GetAllProjects() {
+    "use cache";
+    cacheLife("days");
+    cacheTag("projects");
+
     const dbProjects = await getDbAllProjects();
 
     const projectsWithBalance = await Promise.all(
