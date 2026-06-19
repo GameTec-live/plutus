@@ -54,12 +54,40 @@ Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.s
    cp example.env .env
    ```
    
-   Required environment variables:
-   | Variable | Description |
-   |----------|-------------|
-   | `DATABASE_URL` | Your Neon DB or PostgreSQL connection string |
-   | `BETTER_AUTH_SECRET` | Secret key for authentication (generate a secure random string) |
-   | `BETTER_AUTH_URL` | Your application URL (e.g., `http://localhost:3000` for development) |
+ Required environment variables:
+
+  | Variable | Description |
+  |----------|-------------|
+  | `DATABASE_URL` | Your Neon DB or PostgreSQL connection string |
+  | `BETTER_AUTH_SECRET` | Secret key for authentication (generate a secure random string) |
+  | `BETTER_AUTH_URL` | Your application URL (e.g., `http://localhost:3000` for development) |
+  | `GITHUB_CLIENT_ID` | GitHub OAuth application client ID |
+  | `GITHUB_CLIENT_SECRET` | GitHub OAuth application client secret |
+  | `MEILI_INDEX` |  |
+  | `MEILI_MANAGE_KEY` |  |
+  | `MEILI_MASTER_KEY` |  |
+  | `MEILI_SEARCH_KEY` |  |
+  | `MEILI_URL` |  |
+  | `NEXT_PUBLIC_GITHUB_ENABLED` | Enable GitHub authentication (`true` or `false`) |
+  | `NEXT_PUBLIC_MEILI_INDEX` |  |
+  | `NEXT_PUBLIC_MEILI_SEARCH_KEY` | Public Meilisearch search key |
+  | `NEXT_PUBLIC_MEILI_URL` | Public URL of your Meilisearch instance |
+  | `NEXT_PUBLIC_OAUTH_ENABLED` | Enable OAuth authentication (`true` or `false`) |
+  | `OAUTH_CLIENT_ID` | OAuth provider client ID |
+  | `OAUTH_CLIENT_SECRET` | OAuth provider client secret |
+  | `OAUTH_DISCOVERY_URL` |  |
+  | `OPEN_COLLECTIVE_COLLECTIVE_URL` | URL of your Open Collective page |
+  | `OPEN_COLLECTIVE_ENDPOINT` | Open Collective GraphQL API endpoint |
+  | `OPEN_COLLECTIVE_TOKEN` | Open Collective API token |
+  | `RESEND_API_KEY` |  |
+  | `RESEND_BASE_URL` |  |
+  | `RESEND_FROM_EMAIL` |  |
+  | `S3_BUCKETNAME` | Name of your S3 bucket |
+  | `S3_CLIENT` | S3-compatible storage provider name (cloudflare, backblaze, custom) |
+  | `S3_KEY` | S3 secret access key |
+  | `S3_KEY_ID` | S3 access key ID |
+  | `S3_PUBLIC_URL` | Public URL used to serve uploaded files |
+  | `S3_REGION` | Region where your S3 bucket is hosted |
 
 4. **Install dependencies**
    ```bash
