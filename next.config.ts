@@ -7,12 +7,6 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: "tailwindcss.com",
-                port: "",
-                pathname: "/plus-assets/img/logos/mark.svg",
-            },
-            {
-                protocol: "https",
                 hostname: "images.unsplash.com",
                 port: "",
                 pathname: "/**",

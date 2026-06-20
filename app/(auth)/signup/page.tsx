@@ -16,16 +16,8 @@ export default function SignupPage() {
                         <Image
                             alt="Plutus"
                             loading="eager"
-                            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                            className="h-8 w-auto dark:hidden"
-                            width={32}
-                            height={32}
-                        />
-                        <Image
-                            alt="Plutus"
-                            loading="eager"
-                            src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                            className="h-8 w-auto not-dark:hidden"
+                            src="/images/logo.svg"
+                            className="h-8 w-auto invert dark:invert-0"
                             width={32}
                             height={32}
                         />

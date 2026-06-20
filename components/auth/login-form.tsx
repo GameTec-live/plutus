@@ -147,7 +147,10 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                     </Button>
                 </Field>
 
-                <FieldSeparator>Or continue with</FieldSeparator>
+                {(env.NEXT_PUBLIC_GITHUB_ENABLED ||
+                    env.NEXT_PUBLIC_OAUTH_ENABLED) && (
+                    <FieldSeparator>Or continue with</FieldSeparator>
+                )}
 
                 {/* GitHub */}
                 <Field>
@@ -167,7 +170,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                                     fill="currentColor"
                                 />
                             </svg>
-                            SignUp with GitHub
+                            Sign in with GitHub
                         </Button>
                     )}
 
@@ -177,7 +180,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                             type="button"
                             onClick={signInOIDC}
                         >
-                            SignUp with OIDC
+                            Sign in with OIDC
                         </Button>
                     )}
                 </Field>
