@@ -1,14 +1,21 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { cacheTags } from "@/lib/cache-tags";
 import {
     type Project as DBProject,
     getAllProjects as getDbAllProjects,
 } from "@/lib/db/queries/project";
 import { getProjectBalanceByProjectId } from "@/lib/oc/queries/project";
 
-async function getProjectWithBalance(project: DBProject) {
+export async function getProjectWithBalance(project: DBProject) {
+    "use cache";
+    cacheLife("hours");
+    cacheTag(cacheTags.projects.all, cacheTags.projects.byId(project.id));
+
     if (!project.openCollectiveID) {
         return { ...project, balance: 0, currency: "€" };
     }
+
+    cacheTag(cacheTags.openCollective.projectBalance(project.openCollectiveID));
 
     const balanceResult = await getProjectBalanceByProjectId(
         project.openCollectiveID,
@@ -29,14 +36,13 @@ export type Project = Awaited<ReturnType<typeof getProjectWithBalance>>;
 export async function GetAllProjects() {
     "use cache";
     cacheLife("days");
-    cacheTag("project-listing");
+    cacheTag(
+        cacheTags.projects.all,
+        cacheTags.projects.db,
+        cacheTags.projects.list,
+    );
 
-    const dbProjects = await getDbAllProjects();
-
-    return dbProjects.map((project) => ({
-        id: project.id,
-        projectPromise: getProjectWithBalance(project),
-    }));
+    return getDbAllProjects();
 }
 
 export type projects = Awaited<ReturnType<typeof GetAllProjects>>;

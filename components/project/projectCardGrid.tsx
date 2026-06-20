@@ -4,6 +4,7 @@ import type {
     Project,
     ProjectPromiseEntry,
 } from "@/lib/connected-db-oc/project";
+import { getProjectWithBalance } from "@/lib/connected-db-oc/project";
 
 function ProjectCardSkeleton() {
     return (
@@ -12,12 +13,12 @@ function ProjectCardSkeleton() {
 }
 
 async function ProjectCardShell({
-    projectPromise,
+    project,
 }: {
-    projectPromise: Promise<Project>;
+    project: ProjectPromiseEntry;
 }) {
-    const project = await projectPromise;
-    return <ProjectCard project={project} />;
+    const projectWithBalance: Project = await getProjectWithBalance(project);
+    return <ProjectCard project={projectWithBalance} />;
 }
 
 export function ProjectCardGrid({
@@ -29,7 +30,7 @@ export function ProjectCardGrid({
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 sm:px-8 lg:px-16">
             {projects.map((project) => (
                 <Suspense key={project.id} fallback={<ProjectCardSkeleton />}>
-                    <ProjectCardShell projectPromise={project.projectPromise} />
+                    <ProjectCardShell project={project} />
                 </Suspense>
             ))}
         </div>

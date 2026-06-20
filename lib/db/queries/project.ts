@@ -1,12 +1,17 @@
 import { and, desc, eq } from "drizzle-orm";
 import { cacheLife, cacheTag } from "next/cache";
 import { db } from "@/lib";
+import { cacheTags } from "@/lib/cache-tags";
 import { project, projectImage } from "../schema";
 
 export async function getAllProjects() {
     "use cache";
     cacheLife("days");
-    cacheTag("projectsdb", "project-listing");
+    cacheTag(
+        cacheTags.projects.all,
+        cacheTags.projects.db,
+        cacheTags.projects.list,
+    );
     const projectData = await db
         .select({
             id: project.id,
@@ -24,6 +29,14 @@ export async function getAllProjects() {
             ),
         )
         .orderBy(desc(project.createdAt));
+
+    for (const projectEntry of projectData) {
+        cacheTag(
+            cacheTags.projects.byId(projectEntry.id),
+            cacheTags.projects.image(projectEntry.id),
+        );
+    }
+
     return projectData;
 }
 
