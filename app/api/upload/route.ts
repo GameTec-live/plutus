@@ -46,7 +46,12 @@ const router: Router = {
                             bucket: env.S3_BUCKETNAME,
                             key: oldKey,
                         });
-                    } catch {}
+                    } catch (error) {
+                        console.error(
+                            "Error occurred while deleting old banner image.",
+                            error,
+                        );
+                    }
                 }
             },
         }),
