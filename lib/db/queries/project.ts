@@ -6,7 +6,7 @@ import { project, projectImage } from "../schema";
 export async function getAllProjects() {
     "use cache";
     cacheLife("days");
-    cacheTag("projectsdb,project-listing");
+    cacheTag("projectsdb", "project-listing");
     const projectData = await db
         .select({
             id: project.id,
