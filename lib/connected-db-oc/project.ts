@@ -2,6 +2,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import { cacheTags } from "@/lib/cache-tags";
 import {
     type Project as DBProject,
+    getAllProjectByUserId as getDbAllProjectByUserId,
     getAllProjects as getDbAllProjects,
 } from "@/lib/db/queries/project";
 import { getProjectBalanceByProjectId } from "@/lib/oc/queries/project";
@@ -43,6 +44,19 @@ export async function GetAllProjects() {
     );
 
     return getDbAllProjects();
+}
+
+export async function getAllProjectByUserId(userid: string) {
+    "use cache";
+    cacheLife("days");
+    cacheTag(
+        cacheTags.projects.all,
+        cacheTags.projects.db,
+        cacheTags.projects.list,
+        cacheTags.projects.byUser(userid),
+    );
+
+    return getDbAllProjectByUserId(userid);
 }
 
 export type projects = Awaited<ReturnType<typeof GetAllProjects>>;

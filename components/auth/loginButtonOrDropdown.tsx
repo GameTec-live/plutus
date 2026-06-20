@@ -36,7 +36,11 @@ export default function LoginButtonOrDropdown() {
 
     return (
         <div className="border-t border-border pt-4 pb-3">
-            <Link className="flex items-center px-4" href="/profile">
+            <Link
+                className="flex items-center px-4"
+                href={`/user/${session.user.id}`}
+                prefetch
+            >
                 <div className="shrink-0">
                     <Avatar className="size-10 rounded-full bg-muted outline -outline-offset-1 outline-border">
                         <AvatarImage
@@ -62,6 +66,7 @@ export default function LoginButtonOrDropdown() {
                     as={Link}
                     href="/dashboard"
                     className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    prefetch
                 >
                     Dashboard
                 </DisclosureButton>
@@ -69,6 +74,7 @@ export default function LoginButtonOrDropdown() {
                     as={Link}
                     href="/settings"
                     className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                    prefetch
                 >
                     Settings
                 </DisclosureButton>
