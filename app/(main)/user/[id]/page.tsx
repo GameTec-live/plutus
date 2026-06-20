@@ -1,4 +1,7 @@
 import Image from "next/image";
+import { Suspense } from "react";
+import ProjectLoadingPage from "@/components/project/projectloadingPage";
+import UserProjectsCardGrid from "@/components/project/userProjectsCardGrid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getPublicUserById } from "@/lib/db/queries/user";
 
@@ -20,6 +23,7 @@ export default async function UserProfilePage({
                     width={1920}
                     height={1080}
                     className="rounded-lg object-cover h-64"
+                    loading="eager"
                 />
                 <Avatar className="size-30 -mt-15 mr-8 md:mr-16">
                     <AvatarImage
@@ -37,9 +41,12 @@ export default async function UserProfilePage({
                     {user.bio || "No bio available."}
                 </p>
             </div>
-            <div className="mt-8 md:ml-10">
+            <div className="mt-8 mb-4 md:ml-10">
                 <h2 className="text-2xl">{user.name}&apos;s Projects</h2>
             </div>
+            <Suspense fallback={<ProjectLoadingPage />}>
+                <UserProjectsCardGrid userid={id} />
+            </Suspense>
         </div>
     );
 }

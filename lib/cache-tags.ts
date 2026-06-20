@@ -6,6 +6,7 @@ export const cacheTags = {
         grid: "projects:grid",
         byId: (projectId: string) => `projects:${projectId}`,
         image: (projectId: string) => `projects:${projectId}:image`,
+        byUser: (userId: string) => `projects:user:${userId}`,
     },
     openCollective: {
         projectBalance: (slug: string) =>
