@@ -8,7 +8,7 @@ export default function Page() {
         <>
             <Hero />
             <Suspense fallback={<ProjectLoadingPage />}>
-                <AllProjectsCardGrid />
+                <AllProjectsCardGrid id="explore" />
             </Suspense>
         </>
     );
