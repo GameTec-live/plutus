@@ -5,7 +5,6 @@ import { useState } from "react";
 import * as z from "zod";
 import {
     AlertDialog,
-    AlertDialogAction,
     AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
@@ -39,6 +38,7 @@ export function DeleteAccountDialog() {
             if (error) {
                 setServerError(error.message ?? "Failed to delete account.");
             } else {
+                setOpen(false);
                 router.push("/");
             }
         },
@@ -117,9 +117,25 @@ export function DeleteAccountDialog() {
 
                     <AlertDialogFooter className="mt-4">
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction variant="destructive" type="submit">
-                            Delete Account
-                        </AlertDialogAction>
+
+                        <form.Subscribe
+                            selector={(state) => [
+                                state.canSubmit,
+                                state.isSubmitting,
+                            ]}
+                        >
+                            {([canSubmit, isSubmitting]) => (
+                                <Button
+                                    variant="destructive"
+                                    type="submit"
+                                    disabled={!canSubmit || isSubmitting}
+                                >
+                                    {isSubmitting
+                                        ? "Deleting..."
+                                        : "Delete Account"}
+                                </Button>
+                            )}
+                        </form.Subscribe>
                     </AlertDialogFooter>
                 </form>
             </AlertDialogContent>

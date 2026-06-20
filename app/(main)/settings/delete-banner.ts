@@ -21,7 +21,12 @@ export async function deleteBanner() {
         try {
             const key = currentBanner.split("/").slice(-1)[0];
             await deleteObject(s3, { bucket: env.S3_BUCKETNAME, key });
-        } catch {}
+        } catch (error) {
+            console.error(
+                "Error occurred while deleting old banner image.",
+                error,
+            );
+        }
     }
 
     await auth.api.updateUser({
