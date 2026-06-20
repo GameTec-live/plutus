@@ -99,6 +99,12 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                         placeholder="m@example.com"
                         ref={emailRef}
                         required
+                        disabled={loading}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signIn();
+                            }
+                        }}
                     />
                 </Field>
 
@@ -119,13 +125,20 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                         id="password"
                         type="password"
                         ref={passwordRef}
+                        disabled={loading}
                         required
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signIn();
+                            }
+                        }}
                     />
                     <Field orientation="horizontal">
                         <Checkbox
                             id="session-checkbox"
                             name="session-checkbox"
                             checked={rememberMe}
+                            disabled={loading}
                             onCheckedChange={setRememberMe}
                         />
                         <FieldLabel htmlFor="session-checkbox">

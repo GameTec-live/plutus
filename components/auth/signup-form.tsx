@@ -185,8 +185,14 @@ export function SignupForm({
                         type="text"
                         placeholder="johndoe110"
                         required
+                        disabled={loading}
                         ref={nameRef}
                         className="bg-background"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signUpEmail();
+                            }
+                        }}
                     />
                 </Field>
 
@@ -199,8 +205,14 @@ export function SignupForm({
                         type="email"
                         placeholder="m@example.com"
                         required
+                        disabled={loading}
                         ref={emailRef}
                         className="bg-background"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signUpEmail();
+                            }
+                        }}
                     />
                     <FieldDescription>
                         We&apos;ll never share your email with anyone else.
@@ -215,11 +227,17 @@ export function SignupForm({
                         name="password"
                         type="password"
                         required
+                        disabled={loading}
                         ref={passwordRef}
                         className={cn("bg-background")}
                         onChange={(e) =>
                             validatePasswordStrength(e.target.value)
                         }
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signUpEmail();
+                            }
+                        }}
                     />
                     {pwScore > 0 && <StrengthBar score={pwScore} />}
                     {pwScore > 0 && (
@@ -241,7 +259,13 @@ export function SignupForm({
                         required
                         ref={confirmPasswordRef}
                         className={cn("bg-background")}
+                        disabled={loading}
                         onChange={(e) => validateConfirm(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                signUpEmail();
+                            }
+                        }}
                     />
                     <FieldError message={confirmError} />
                 </Field>
