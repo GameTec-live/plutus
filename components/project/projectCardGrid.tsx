@@ -1,0 +1,59 @@
+import { Suspense } from "react";
+import { ProjectCard } from "@/components/project/projectCard";
+import type {
+    Project,
+    ProjectPromiseEntry,
+} from "@/lib/connected-db-oc/project";
+import { getProjectWithBalance } from "@/lib/connected-db-oc/project";
+import { Card, CardFooter, CardHeader } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
+
+function ProjectCardSkeleton() {
+    return (
+        <Card
+            className="relative w-full max-w-sm overflow-hidden pt-0"
+            aria-hidden="true"
+        >
+            <Skeleton className="aspect-video w-full rounded-none rounded-t-xl" />
+            <CardHeader>
+                <Skeleton className="h-5.5 w-3/4" />
+                <Skeleton className="h-5 w-full" />
+            </CardHeader>
+            <CardFooter>
+                <div className="flex w-full max-w-sm flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                        <Skeleton className="h-3.5 w-28" />
+                        <Skeleton className="ml-auto h-3.5 w-16" />
+                    </div>
+                    <Skeleton className="h-1 w-full rounded-full" />
+                </div>
+            </CardFooter>
+        </Card>
+    );
+}
+
+async function ProjectCardShell({ project }: { project: ProjectPromiseEntry }) {
+    const projectWithBalance: Project = await getProjectWithBalance(project);
+    return <ProjectCard project={projectWithBalance} />;
+}
+
+export function ProjectCardGrid({
+    projects,
+    id,
+}: {
+    projects: ProjectPromiseEntry[];
+    id?: string;
+}) {
+    return (
+        <div
+            className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-4 sm:px-8 lg:px-16"
+            id={id}
+        >
+            {projects.map((project) => (
+                <Suspense key={project.id} fallback={<ProjectCardSkeleton />}>
+                    <ProjectCardShell project={project} />
+                </Suspense>
+            ))}
+        </div>
+    );
+}

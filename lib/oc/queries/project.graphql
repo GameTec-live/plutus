@@ -1,0 +1,11 @@
+query GetProjectBalanceByProjectId($slug: String) {
+    project(slug: $slug) {
+        stats {
+            id
+            balance {
+                value
+                currency
+            }
+        }
+    }
+}
