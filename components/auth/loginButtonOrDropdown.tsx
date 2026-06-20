@@ -38,7 +38,7 @@ export default function LoginButtonOrDropdown() {
         <div className="border-t border-border pt-4 pb-3">
             <Link
                 className="flex items-center px-4"
-                href={`/user/${session.user.id}` || "/user"}
+                href={`/user/${session.user.id}`}
                 prefetch
             >
                 <div className="shrink-0">

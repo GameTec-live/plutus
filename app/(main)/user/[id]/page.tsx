@@ -1,8 +1,11 @@
+import { cacheLife, cacheTag } from "next/cache";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ProjectLoadingPage from "@/components/project/projectloadingPage";
 import UserProjectsCardGrid from "@/components/project/userProjectsCardGrid";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cacheTags } from "@/lib/cache-tags";
 import { getPublicUserById } from "@/lib/db/queries/user";
 
 export default async function UserProfilePage({
@@ -10,9 +13,24 @@ export default async function UserProfilePage({
 }: {
     params: Promise<{ id: string }>;
 }) {
+    "use cache";
+    cacheLife("minutes");
+
     const { id } = await params;
 
+    cacheTag(
+        cacheTags.projects.all,
+        cacheTags.projects.byUser(id),
+        cacheTags.users.all,
+        cacheTags.users.profile,
+        cacheTags.users.byId(id),
+    );
+
     const user = await getPublicUserById(id);
+
+    if (!user) {
+        notFound();
+    }
 
     return (
         <div className="flex flex-col mx-4 md:mx-16">

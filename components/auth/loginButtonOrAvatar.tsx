@@ -71,7 +71,7 @@ export default function LoginButtonOrAvatar() {
                 </MenuItem>
                 <MenuItem>
                     <Link
-                        href={`/user/${session.user.id}` || "/user"}
+                        href={`/user/${session.user.id}`}
                         prefetch
                         className="block px-4 py-2 text-sm text-popover-foreground data-focus:bg-accent data-focus:text-accent-foreground data-focus:outline-hidden"
                     >

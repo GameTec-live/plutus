@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { cacheTags } from "@/lib/cache-tags";
-import { getAllProjectByUserId } from "@/lib/db/queries/project";
+import { getAllProjectByUserId } from "@/lib/connected-db-oc/project";
 import { ProjectCardGrid } from "./projectCardGrid";
 
 export default async function UserProjectsCardGrid({

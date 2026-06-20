@@ -12,4 +12,9 @@ export const cacheTags = {
         projectBalance: (slug: string) =>
             `open-collective:projects:${slug}:balance`,
     },
+    users: {
+        all: "users",
+        profile: "users:profile",
+        byId: (userId: string) => `users:${userId}`,
+    },
 } as const;
