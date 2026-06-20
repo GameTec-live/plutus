@@ -12,11 +12,7 @@ function ProjectCardSkeleton() {
     );
 }
 
-async function ProjectCardShell({
-    project,
-}: {
-    project: ProjectPromiseEntry;
-}) {
+async function ProjectCardShell({ project }: { project: ProjectPromiseEntry }) {
     const projectWithBalance: Project = await getProjectWithBalance(project);
     return <ProjectCard project={projectWithBalance} />;
 }
