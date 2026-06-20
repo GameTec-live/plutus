@@ -61,7 +61,7 @@ export function AvatarUpload({
 
     return (
         <div className="flex flex-col gap-2">
-            <div className="relative group">
+            <div className="relative group size-20">
                 <Avatar className="size-20 ring-4 ring-card bg-muted">
                     <AvatarImage
                         src={preview ?? image ?? undefined}

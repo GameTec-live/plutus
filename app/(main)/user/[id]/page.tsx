@@ -55,7 +55,7 @@ export default async function UserProfilePage({
             </div>
             <div className="md:ml-10 lg:-mt-8">
                 <h1 className="text-4xl">{user.name}</h1>
-                <p className="text-lg text-muted-foreground whitespace-pre-wrap">
+                <p className="text-lg text-muted-foreground whitespace-pre-wrap text-wrap wrap-anywhere">
                     {user.bio || "No bio available."}
                 </p>
             </div>

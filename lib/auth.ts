@@ -1,9 +1,11 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { genericOAuth } from "better-auth/plugins";
+import { revalidateTag } from "next/cache";
 import { env } from "@/env";
 import * as schema from "@/lib/db/schema";
 import { db } from ".";
+import { cacheTags } from "./cache-tags";
 import { resend } from "./emails";
 import { PasswordResetEmail } from "./emails/password-reset-email";
 import { VerifyEmailEmail } from "./emails/verify-email-email";
@@ -112,4 +114,13 @@ export const auth = betterAuth({
             ],
         }),
     ],
+    databaseHooks: {
+        user: {
+            update: {
+                async after(user) {
+                    revalidateTag(cacheTags.users.byId(user.id), "max");
+                },
+            },
+        },
+    },
 });

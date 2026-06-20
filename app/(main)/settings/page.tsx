@@ -17,7 +17,7 @@ export default async function SettingsPage() {
         redirect("/login");
     }
 
-    const { name, email, image } = session.user;
+    const { name, email, image, bio } = session.user;
     const bannerImage = session.user.bannerImage ?? null;
 
     return (
@@ -32,6 +32,7 @@ export default async function SettingsPage() {
                         email={email}
                         image={image}
                         bannerImage={bannerImage}
+                        bio={bio}
                     />
                 </div>
             </div>

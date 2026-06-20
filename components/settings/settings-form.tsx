@@ -5,6 +5,7 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
 import { AvatarUpload } from "./avatar-upload";
 import { BannerUpload } from "./banner-upload";
+import { BioForm } from "./bio-from";
 import { DeleteAccountDialog } from "./delete-account-dialog";
 import { EmailForm } from "./email-form";
 import { PasswordForm } from "./passwort-form";
@@ -16,11 +17,13 @@ export function SettingsForm({
     email,
     image,
     bannerImage,
+    bio,
 }: {
     name: string;
     email: string;
     image?: string | null;
     bannerImage?: string | null;
+    bio?: string | null;
 }) {
     return (
         <div className="ring-foreground/10 bg-card text-card-foreground rounded-xl ring-1 overflow-hidden">
@@ -43,6 +46,7 @@ export function SettingsForm({
                     <EmailForm currentEmail={email} />
                     <Separator className="my-2" />
                     <PasswordForm />
+                    <BioForm currentBio={bio} />
                 </Section>
 
                 <Separator />
