@@ -178,7 +178,7 @@ export function PasswordForm() {
                 <p className="text-sm text-destructive mt-2">{serverError}</p>
             )}
             {success && (
-                <p className="text-sm text-success mt-2">
+                <p className="text-sm text-green-600 dark:text-green-400 mt-2">
                     Password changed successfully.
                 </p>
             )}

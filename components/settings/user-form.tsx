@@ -110,7 +110,9 @@ export function UsernameForm({ currentName }: { currentName: string }) {
                 <p className="text-sm text-destructive mt-2">{serverError}</p>
             )}
             {success && (
-                <p className="text-sm text-success mt-2">Username updated.</p>
+                <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+                    Username updated.
+                </p>
             )}
         </form>
     );
