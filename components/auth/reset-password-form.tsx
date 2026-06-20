@@ -1,83 +1,183 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+    Field,
+    FieldError,
+    FieldGroup,
+    FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
-import { cn } from "@/lib/utils";
 
-export function ResetPasswordForm({ className }: React.ComponentProps<"div">) {
-    const [submitError, setSubmitError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
-    const router = useRouter();
-    const emailRef = useRef<HTMLInputElement>(null);
+const resetPasswordSchema = z
+    .object({
+        password: z.string().min(8, "Password must be at least 8 characters."),
+        confirmPassword: z.string().min(1, "Please confirm your password."),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords do not match.",
+        path: ["confirmPassword"],
+    });
 
-    const resetPassword = async () => {
-        if (!emailRef.current?.value) {
-            setSubmitError("Please enter your email address.");
-            return;
-        }
+type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-        setSubmitError(null);
+interface ResetPasswordFormProps {
+    token: string;
+    onSuccess?: () => void;
+}
 
-        await authClient.requestPasswordReset(
-            {
-                email: emailRef.current.value,
-            },
-            {
-                onRequest: () => setLoading(true),
-                onSuccess: () => {
-                    setLoading(false);
-                    router.push("/login");
-                },
-                onError: (ctx) => {
-                    setSubmitError(ctx.error.message);
-                    setLoading(false);
-                },
-            },
-        );
-    };
+function getErrorMessage(error: unknown) {
+    if (!error) {
+        return undefined;
+    }
+
+    if (typeof error === "string") {
+        return error;
+    }
+
+    if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof error.message === "string"
+    ) {
+        return error.message;
+    }
+
+    return String(error);
+}
+
+export function ResetPasswordForm({
+    token,
+    onSuccess,
+}: ResetPasswordFormProps) {
+    const form = useForm({
+        defaultValues: {
+            password: "",
+            confirmPassword: "",
+        } satisfies ResetPasswordFormValues,
+        validators: {
+            onSubmit: resetPasswordSchema,
+        },
+        onSubmit: async ({ value }) => {
+            const res = await authClient.resetPassword({
+                newPassword: value.password,
+                token,
+            });
+
+            if (res.error) {
+                toast.error(res.error.message);
+                return;
+            }
+
+            toast.success("Password reset successfully");
+            onSuccess?.();
+        },
+    });
 
     return (
-        <div className={cn("flex flex-col gap-6", className)}>
+        <form
+            onSubmit={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                form.handleSubmit();
+            }}
+            className="grid gap-4"
+        >
             <FieldGroup>
-                <div className="flex flex-col items-center gap-1 text-center">
-                    <h1 className="text-2xl font-bold">Reset your password</h1>
-                    <p className="text-sm text-balance text-muted-foreground">
-                        Enter your email below to reset your password
-                    </p>
-                </div>
-                {/* Email */}
-                <Field>
-                    <FieldLabel htmlFor="email">Email</FieldLabel>
-                    <Input
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
-                        ref={emailRef}
-                        required
-                    />
-                </Field>
+                <form.Field name="password">
+                    {(field) => {
+                        const error = getErrorMessage(
+                            field.state.meta.errors[0],
+                        );
+                        const invalid =
+                            field.state.meta.isTouched &&
+                            field.state.meta.errors.length > 0;
 
-                {/* Reset Password Button */}
-                <Field>
-                    {submitError && (
-                        <p className="text-sm font-medium text-destructive">
-                            {submitError}
-                        </p>
-                    )}
+                        return (
+                            <Field data-invalid={invalid}>
+                                <FieldLabel htmlFor="reset-password">
+                                    New password
+                                </FieldLabel>
+                                <Input
+                                    id="reset-password"
+                                    name={field.name}
+                                    type="password"
+                                    placeholder="Enter new password"
+                                    aria-invalid={invalid}
+                                    autoComplete="new-password"
+                                    value={field.state.value}
+                                    onBlur={field.handleBlur}
+                                    onChange={(event) =>
+                                        field.handleChange(event.target.value)
+                                    }
+                                />
+                                {invalid && error ? (
+                                    <FieldError>{error}</FieldError>
+                                ) : null}
+                            </Field>
+                        );
+                    }}
+                </form.Field>
 
-                    <Button
-                        type="button"
-                        onClick={resetPassword}
-                        disabled={loading}
-                    >
-                        {loading ? "Resetting password..." : "Reset Password"}
-                    </Button>
-                </Field>
+                <form.Field name="confirmPassword">
+                    {(field) => {
+                        const error = getErrorMessage(
+                            field.state.meta.errors[0],
+                        );
+                        const invalid =
+                            field.state.meta.isTouched &&
+                            field.state.meta.errors.length > 0;
+
+                        return (
+                            <Field data-invalid={invalid}>
+                                <FieldLabel htmlFor="reset-confirm-password">
+                                    Confirm password
+                                </FieldLabel>
+                                <Input
+                                    id="reset-confirm-password"
+                                    name={field.name}
+                                    type="password"
+                                    placeholder="Confirm new password"
+                                    aria-invalid={invalid}
+                                    autoComplete="new-password"
+                                    value={field.state.value}
+                                    onBlur={field.handleBlur}
+                                    onChange={(event) =>
+                                        field.handleChange(event.target.value)
+                                    }
+                                />
+                                {invalid && error ? (
+                                    <FieldError>{error}</FieldError>
+                                ) : null}
+                            </Field>
+                        );
+                    }}
+                </form.Field>
             </FieldGroup>
-        </div>
+
+            <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+                {([canSubmit, isSubmitting]) => (
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={!canSubmit || isSubmitting}
+                    >
+                        {isSubmitting ? (
+                            <Loader2 size={16} className="animate-spin" />
+                        ) : (
+                            "Reset password"
+                        )}
+                    </Button>
+                )}
+            </form.Subscribe>
+        </form>
     );
 }

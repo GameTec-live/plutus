@@ -74,13 +74,27 @@ export function UsernameForm({ currentName }: { currentName: string }) {
                                         aria-invalid={isInvalid}
                                         placeholder="New username"
                                     />
-                                    <Button
-                                        type="submit"
-                                        size="sm"
-                                        className="shrink-0"
+                                    <form.Subscribe
+                                        selector={(state) => [
+                                            state.canSubmit,
+                                            state.isSubmitting,
+                                        ]}
                                     >
-                                        Save
-                                    </Button>
+                                        {([canSubmit, isSubmitting]) => (
+                                            <Button
+                                                type="submit"
+                                                size="sm"
+                                                className="shrink-0"
+                                                disabled={
+                                                    !canSubmit || isSubmitting
+                                                }
+                                            >
+                                                {isSubmitting
+                                                    ? "Saving..."
+                                                    : "Save"}
+                                            </Button>
+                                        )}
+                                    </form.Subscribe>
                                 </div>
                                 {isInvalid && (
                                     <FieldError

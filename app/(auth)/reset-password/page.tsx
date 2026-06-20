@@ -1,47 +1,36 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ResetPasswordForm } from "@/components/auth/reset-password-form";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
-export default function ResetPasswordPage() {
+export default function Page() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const token = searchParams.get("token") ?? "";
+
     return (
-        <div className="grid min-h-svh lg:grid-cols-2">
-            <div className="flex flex-col gap-4 p-6 md:p-10">
-                <div className="flex justify-center gap-2 md:justify-start">
-                    <Link
-                        href="/"
-                        className="flex items-center gap-2 font-medium"
-                    >
-                        <Image
-                            alt="Plutus"
-                            loading="eager"
-                            src="/images/logo.svg"
-                            className="h-8 w-auto invert dark:invert-0"
-                            width={32}
-                            height={32}
-                        />
-                        <span className="hidden text-lg font-bold sm:block">
-                            Plutus
-                        </span>
-                    </Link>
-                </div>
-                <div className="flex flex-1 items-center justify-center">
-                    <div className="w-full max-w-xs">
-                        <ResetPasswordForm />
-                    </div>
-                </div>
-            </div>
-            <div className="relative hidden bg-muted lg:block">
-                <Image
-                    src="/images/signup-img.jpg"
-                    alt="Image"
-                    className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5] dark:grayscale"
-                    width={600}
-                    height={800}
-                    loading="eager"
-                />
-            </div>
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)]">
+            <Card className="w-md">
+                <CardHeader>
+                    <CardTitle>Reset password</CardTitle>
+                    <CardDescription>
+                        Enter new password and confirm it to reset your password
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <ResetPasswordForm
+                        token={token}
+                        onSuccess={() => router.push("/login")}
+                    />
+                </CardContent>
+            </Card>
         </div>
     );
 }

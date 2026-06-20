@@ -30,6 +30,7 @@ export default function RootLayout({
             lang="en"
             className={`${geist.variable} motion-safe:scroll-smooth`}
             suppressHydrationWarning
+            data-scroll-behavior="smooth"
         >
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}

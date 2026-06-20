@@ -2,7 +2,9 @@ import { useUploadFile } from "@better-upload/client";
 import { Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useDropzone } from "react-dropzone";
+import { deleteBanner } from "@/app/(main)/settings/delete-banner";
 import { cn } from "@/lib/utils";
 
 export function BannerUpload({
@@ -11,6 +13,7 @@ export function BannerUpload({
     currentBanner?: string | null;
 }) {
     const router = useRouter();
+    const [isRemovePending, startRemove] = useTransition();
 
     const { upload, isPending } = useUploadFile({
         route: "banner",
@@ -34,29 +37,27 @@ export function BannerUpload({
     );
 
     async function handleRemove() {
-        if (!currentBanner) return;
+        startRemove(async () => {
+            if (!currentBanner) return;
+            await deleteBanner();
 
-        await fetch("/api/upload/banner", {
-            method: "DELETE",
+            router.refresh();
         });
-
-        router.refresh();
     }
 
     const bannerSrc = currentBanner ?? "/images/default-banner.png";
 
     return (
         <div className="relative h-28 group overflow-hidden">
-            {/* Banner image — always shown */}
             <Image
                 src={bannerSrc}
                 alt="Banner"
                 fill
-                sizes="100vw"
+                sizes="(min-width: 40rem) 80vw, 100vw"
                 className="absolute inset-0 w-full h-full object-cover"
             />
 
-            {/* Dropzone overlay — appears on hover */}
+            {/* Dropzone overlay appears on hover */}
             <label
                 {...getRootProps()}
                 className={cn(
@@ -96,12 +97,12 @@ export function BannerUpload({
                 />
             </label>
 
-            {/* Remove button — only shown when there's a custom banner */}
+            {/* Remove button only shown when there's a custom banner */}
             {currentBanner && (
                 <button
                     type="button"
                     onClick={handleRemove}
-                    disabled={isPending}
+                    disabled={isPending || isRemovePending}
                     aria-label="Remove banner"
                     className="absolute top-2 right-2 z-10 flex items-center justify-center size-6 rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80 disabled:cursor-not-allowed"
                 >

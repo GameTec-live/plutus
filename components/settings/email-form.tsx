@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 
 const emailSchema = z.object({
-    email: z.string().email("Please enter a valid email address."),
+    email: z.email("Please enter a valid email address."),
 });
 
 export function EmailForm({ currentEmail }: { currentEmail: string }) {
@@ -76,13 +76,27 @@ export function EmailForm({ currentEmail }: { currentEmail: string }) {
                                         aria-invalid={isInvalid}
                                         placeholder="New email address"
                                     />
-                                    <Button
-                                        type="submit"
-                                        size="sm"
-                                        className="shrink-0"
+                                    <form.Subscribe
+                                        selector={(state) => [
+                                            state.canSubmit,
+                                            state.isSubmitting,
+                                        ]}
                                     >
-                                        Save
-                                    </Button>
+                                        {([canSubmit, isSubmitting]) => (
+                                            <Button
+                                                type="submit"
+                                                size="sm"
+                                                className="shrink-0"
+                                                disabled={
+                                                    !canSubmit || isSubmitting
+                                                }
+                                            >
+                                                {isSubmitting
+                                                    ? "Saving..."
+                                                    : "Save"}
+                                            </Button>
+                                        )}
+                                    </form.Subscribe>
                                 </div>
                                 {isInvalid && (
                                     <FieldError

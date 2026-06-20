@@ -159,9 +159,20 @@ export function PasswordForm() {
                 </form.Field>
             </FieldGroup>
 
-            <Button type="submit" size="sm" className="mt-4">
-                Change Password
-            </Button>
+            <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+                {([canSubmit, isSubmitting]) => (
+                    <Button
+                        type="submit"
+                        size="sm"
+                        className="mt-4"
+                        disabled={!canSubmit || isSubmitting}
+                    >
+                        {isSubmitting ? "Changing..." : "Change Password"}
+                    </Button>
+                )}
+            </form.Subscribe>
 
             {serverError && (
                 <p className="text-sm text-destructive mt-2">{serverError}</p>

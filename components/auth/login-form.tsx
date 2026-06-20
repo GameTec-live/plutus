@@ -109,7 +109,7 @@ export function LoginForm({ className }: React.ComponentProps<"div">) {
                         {/* Forgot Password Link hidden until mail server configured*/}
 
                         <Link
-                            href="/reset-password"
+                            href="/forgot-password"
                             className="ml-auto text-sm underline-offset-4 hover:underline"
                         >
                             Forgot your password?
