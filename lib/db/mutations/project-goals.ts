@@ -9,7 +9,16 @@ import { auth } from "@/lib/auth";
 import { cacheTags } from "@/lib/cache-tags";
 import type { ProjectGoalFormValue } from "@/lib/db/queries/project";
 import { project, projectGoal } from "@/lib/db/schema";
-import { getProjectGoalErrors, parseAmountToCents } from "@/lib/project-goals";
+import { validateProjectGoals } from "@/lib/project-goals";
+
+function failure<Code extends string>(
+    code: Code,
+    message: string,
+    fieldErrors?: Record<string, string[]>,
+) {
+    const ok = false;
+    return { ok, code, message, fieldErrors };
+}
 
 export async function replaceProjectGoals({
     projectId,
@@ -20,29 +29,20 @@ export async function replaceProjectGoals({
 }) {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session) {
-        return {
-            ok: false as const,
-            code: "UNAUTHORIZED" as const,
-            message: "Sign in to update project goals.",
-        };
+        return failure("UNAUTHORIZED", "Sign in to update project goals.");
     }
 
     if (!z.uuid().safeParse(projectId).success) {
-        return {
-            ok: false as const,
-            code: "VALIDATION" as const,
-            message: "The project ID is invalid.",
-        };
+        return failure("VALIDATION", "The project ID is invalid.");
     }
 
-    const fieldErrors = getProjectGoalErrors(goals);
-    if (Object.keys(fieldErrors).length > 0) {
-        return {
-            ok: false as const,
-            code: "VALIDATION" as const,
-            message: "Review the highlighted goal fields.",
-            fieldErrors,
-        };
+    const validation = validateProjectGoals(goals);
+    if (Object.keys(validation.errors).length > 0) {
+        return failure(
+            "VALIDATION",
+            "Review the highlighted goal fields.",
+            validation.errors,
+        );
     }
 
     try {
@@ -53,18 +53,13 @@ export async function replaceProjectGoals({
             .limit(1);
 
         if (!projectOwner) {
-            return {
-                ok: false as const,
-                code: "NOT_FOUND" as const,
-                message: "Project not found.",
-            };
+            return failure("NOT_FOUND", "Project not found.");
         }
         if (projectOwner.creator !== session.user.id) {
-            return {
-                ok: false as const,
-                code: "FORBIDDEN" as const,
-                message: "You do not have permission to edit this project.",
-            };
+            return failure(
+                "FORBIDDEN",
+                "You do not have permission to edit this project.",
+            );
         }
 
         const savedGoals = await db.transaction(async (transaction) => {
@@ -72,18 +67,14 @@ export async function replaceProjectGoals({
                 .delete(projectGoal)
                 .where(eq(projectGoal.projectId, projectId));
 
-            if (goals.length === 0) return [];
+            if (validation.goals.length === 0) return [];
 
             return transaction
                 .insert(projectGoal)
                 .values(
-                    goals.map((goal) => ({
+                    validation.goals.map((goal) => ({
+                        ...goal,
                         projectId,
-                        title: goal.title.trim(),
-                        description: goal.description.trim(),
-                        amount: parseAmountToCents(goal.amount) as number,
-                        isStretch: goal.isStretch,
-                        isPrimary: goal.isPrimary,
                     })),
                 )
                 .returning({
@@ -104,16 +95,16 @@ export async function replaceProjectGoals({
         updateTag(cacheTags.projects.goals(projectId));
         updateTag(cacheTags.projects.byUser(session.user.id));
 
-        return { ok: true as const, goals: savedGoals };
+        const ok = true;
+        return { ok, goals: savedGoals };
     } catch (error) {
         console.error(
             `Failed to replace goals for project ${projectId}`,
             error,
         );
-        return {
-            ok: false as const,
-            code: "DATABASE" as const,
-            message: "Project goals could not be saved. Please try again.",
-        };
+        return failure(
+            "DATABASE",
+            "Project goals could not be saved. Please try again.",
+        );
     }
 }

@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/input-group";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProjectGoalFormValue } from "@/lib/db/queries/project";
-import { getProjectGoalErrors, normalizeCurrency } from "@/lib/project-goals";
+import { normalizeCurrency, validateProjectGoals } from "@/lib/project-goals";
 
 function createGoal(): ProjectGoalFormValue {
     return {
@@ -45,7 +45,8 @@ export function ProjectGoalsFields({
     disabled?: boolean;
     errors?: Record<string, string[]>;
 }) {
-    const localErrors = getProjectGoalErrors(value);
+    const validation = validateProjectGoals(value);
+    const localErrors = validation.errors;
     const allErrors = { ...localErrors, ...errors };
 
     const updateGoal = (

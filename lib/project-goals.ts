@@ -18,13 +18,13 @@ export function parseAmountToCents(value: string): number | null {
     return Number(cents);
 }
 
-export function getProjectGoalErrors(goals: ProjectGoalFormValue[]) {
+export function validateProjectGoals(goals: ProjectGoalFormValue[]) {
     const errors: Record<string, string[]> = {};
     const addError = (path: string, message: string) => {
         errors[path] = [...(errors[path] ?? []), message];
     };
 
-    goals.forEach((goal, index) => {
+    const normalizedGoals = goals.map((goal, index) => {
         if (!goal.clientId)
             addError(`${index}.clientId`, "Goal ID is required.");
         if (!goal.title.trim()) {
@@ -38,7 +38,8 @@ export function getProjectGoalErrors(goals: ProjectGoalFormValue[]) {
                 "Goal description must be 200 characters or fewer.",
             );
         }
-        if (parseAmountToCents(goal.amount) === null) {
+        const amount = parseAmountToCents(goal.amount);
+        if (amount === null) {
             addError(
                 `${index}.amount`,
                 "Enter a positive amount with no more than two decimal places.",
@@ -50,13 +51,25 @@ export function getProjectGoalErrors(goals: ProjectGoalFormValue[]) {
                 "A stretch goal cannot be the primary goal.",
             );
         }
+
+        if (amount === null) return null;
+        return {
+            title: goal.title.trim(),
+            description: goal.description.trim(),
+            amount,
+            isStretch: goal.isStretch,
+            isPrimary: goal.isPrimary,
+        };
     });
 
     if (goals.filter((goal) => goal.isPrimary).length > 1) {
         addError("goals", "Only one primary goal may be selected.");
     }
 
-    return errors;
+    return {
+        errors,
+        goals: normalizedGoals.filter((goal) => goal !== null),
+    };
 }
 
 export function getFundingProgressModel(
