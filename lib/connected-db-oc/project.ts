@@ -16,10 +16,11 @@ export async function getProjectWithBalance(project: DBProject) {
         return { ...project, balance: 0, currency: "€" };
     }
 
-    cacheTag(cacheTags.openCollective.projectBalance(project.openCollectiveID));
+    cacheTag(cacheTags.openCollective.projectBalance(project.id));
 
     const balanceResult = await getProjectBalanceByProjectId(
         project.openCollectiveID,
+        project.id,
     );
     const balance = balanceResult.data?.project?.stats?.balance?.value ?? 0;
     const currency =
