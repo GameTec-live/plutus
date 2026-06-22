@@ -20,6 +20,7 @@ export async function getProjectWithBalance(project: DBProject) {
 
     const balanceResult = await getProjectBalanceByProjectId(
         project.openCollectiveID,
+        project.id,
     );
     const balance = balanceResult.data?.project?.stats?.balance?.value ?? 0;
     const currency =

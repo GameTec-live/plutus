@@ -3,7 +3,10 @@ import { apolloClient } from "@/lib/apollo";
 import { cacheTags } from "@/lib/cache-tags";
 import { GetProjectBalanceByProjectIdDocument } from "@/lib/oc/generated/operations";
 
-export async function getProjectBalanceByProjectId(projectId: string) {
+export async function getProjectBalanceByProjectId(
+    slug: string,
+    projectId: string,
+) {
     "use cache";
     cacheLife("hours");
     cacheTag(
@@ -13,7 +16,7 @@ export async function getProjectBalanceByProjectId(projectId: string) {
     const result = await apolloClient.query({
         query: GetProjectBalanceByProjectIdDocument,
         variables: {
-            slug: projectId,
+            slug: slug,
         },
     });
 
