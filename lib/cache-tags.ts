@@ -9,8 +9,8 @@ export const cacheTags = {
         byUser: (userId: string) => `projects:user:${userId}`,
     },
     openCollective: {
-        projectBalance: (slug: string) =>
-            `open-collective:projects:${slug}:balance`,
+        projectBalance: (id: string) =>
+            `open-collective:projects:${id}:balance`,
     },
     users: {
         all: "users",

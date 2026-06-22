@@ -26,7 +26,7 @@ projects
 | `projects:grid` | Landing page project UI | `hours` | The cached rendered project grid shell on the landing page. |
 | `projects:{projectId}` | One DB project | `hours`/`days` depending on caller | All cached data derived from one local project row. |
 | `projects:{projectId}:image` | One project's primary image | `days` | Cached data derived from the project's primary image selection or URL. |
-| `open-collective:projects:{slug}:balance` | OpenCollective | `hours` | Cached OpenCollective balance for one project slug. |
+| `open-collective:projects:{id}:balance` | OpenCollective | `hours` | Cached OpenCollective balance for one project. |
 
 ## Invalidation Guide
 
