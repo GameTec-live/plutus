@@ -43,6 +43,7 @@ Use `revalidateTag` from Route Handlers, cron jobs, webhooks, or other non-actio
 | Change project primary image | `projects:{projectId}:image`, `projects:{projectId}`, `projects:grid` |
 | Change project OpenCollective slug | `projects:{projectId}`, `projects:grid`, `open-collective:projects:{oldSlug}:balance`, `open-collective:projects:{newSlug}:balance` |
 | OpenCollective balance webhook or scheduled balance refresh | `open-collective:projects:{slug}:balance`, `projects:grid` |
+| Successful contribution through the project-page embed | `open-collective:projects:{slug}:balance`, `projects:grid` |
 | Bulk project import or admin repair | `projects` |
 
 ## Notes
