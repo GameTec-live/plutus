@@ -7,40 +7,48 @@ import {
 } from "@/lib/db/queries/project";
 import { getProjectBalanceByProjectId } from "@/lib/oc/queries/project";
 
-export async function getProjectWithBalance<
-    T extends { id: string; openCollectiveID: string | null },
->(project: T) {
+async function getCachedProjectBalance(
+    projectId: string,
+    openCollectiveID: string | null,
+) {
     "use cache";
     cacheLife("hours");
-    cacheTag(cacheTags.projects.all, cacheTags.projects.byId(project.id));
+    cacheTag(cacheTags.openCollective.projectBalance(projectId));
 
-    if (!project.openCollectiveID) {
-        return { ...project, balance: 0, currency: "EUR" };
+    if (!openCollectiveID) {
+        return { balance: 0, currency: "EUR" };
     }
-
-    cacheTag(cacheTags.openCollective.projectBalance(project.id));
 
     try {
         const balanceResult = await getProjectBalanceByProjectId(
-            project.openCollectiveID,
-            project.id,
+            openCollectiveID,
+            projectId,
         );
         const balance = balanceResult.data?.project?.stats?.balance?.value;
         const currency =
             balanceResult.data?.project?.stats?.balance?.currency ?? "EUR";
 
         return {
-            ...project,
             balance: balance ?? null,
             currency,
         };
     } catch (error) {
         console.error(
-            `Failed to load Open Collective balance for project ${project.id}`,
+            `Failed to load Open Collective balance for project ${projectId}`,
             error,
         );
-        return { ...project, balance: null, currency: "EUR" };
+        return { balance: null, currency: "EUR" };
     }
+}
+
+export async function getProjectWithBalance<
+    T extends { id: string; openCollectiveID: string | null },
+>(project: T) {
+    const balance = await getCachedProjectBalance(
+        project.id,
+        project.openCollectiveID,
+    );
+    return { ...project, ...balance };
 }
 
 export type Project = Awaited<
