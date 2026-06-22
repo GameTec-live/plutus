@@ -3,7 +3,7 @@ query GetProjectBalanceByProjectId($slug: String) {
         stats {
             id
             balance {
-                value
+                valueInCents
                 currency
             }
         }

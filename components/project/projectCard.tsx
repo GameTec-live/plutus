@@ -35,7 +35,7 @@ export function ProjectCard({ project }: { project: Project }) {
                     <CardFooter className="relative z-20">
                         <FundingProgress
                             goals={project.goals}
-                            balance={project.balance}
+                            balanceInCents={project.balanceInCents}
                             currency={project.currency}
                             compact
                         />

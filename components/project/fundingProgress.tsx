@@ -16,18 +16,18 @@ import { cn } from "@/lib/utils";
 
 export function FundingProgress({
     goals,
-    balance,
+    balanceInCents,
     currency,
     compact = false,
     className,
 }: {
     goals: ProjectGoal[];
-    balance: number | null;
+    balanceInCents: number | null;
     currency: string;
     compact?: boolean;
     className?: string;
 }) {
-    const model = getFundingProgressModel(goals, balance);
+    const model = getFundingProgressModel(goals, balanceInCents);
     if (!model) return null;
 
     const balanceLabel =
@@ -62,11 +62,13 @@ export function FundingProgress({
                                             "absolute top-1/2 z-10 flex size-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-background bg-primary text-primary-foreground shadow-sm outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                                             marker.completed === false &&
                                                 "bg-background text-primary ring-2 ring-primary",
+                                            marker.completed === null &&
+                                                "bg-muted text-muted-foreground ring-2 ring-border",
                                         )}
                                         style={{
                                             left: `${marker.position}%`,
                                         }}
-                                        aria-label={`${marker.goals.map((goal) => goal.title).join(", ")}: ${formatCurrencyFromCents(marker.amount, currency)}${marker.completed ? ", complete" : ""}`}
+                                        aria-label={`${marker.goals.map((goal) => goal.title).join(", ")}: ${formatCurrencyFromCents(marker.amount, currency)}${marker.completed === true ? ", complete" : marker.completed === null ? ", funding status unavailable" : ", incomplete"}`}
                                     />
                                 }
                             >
@@ -94,6 +96,11 @@ export function FundingProgress({
                                                     <Badge>
                                                         <CheckIcon data-icon="inline-start" />
                                                         Complete
+                                                    </Badge>
+                                                )}
+                                                {marker.completed === null && (
+                                                    <Badge variant="outline">
+                                                        Status unavailable
                                                     </Badge>
                                                 )}
                                             </div>

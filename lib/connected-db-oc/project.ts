@@ -16,7 +16,7 @@ async function getCachedProjectBalance(
     cacheTag(cacheTags.openCollective.projectBalance(projectId));
 
     if (!openCollectiveID) {
-        return { balance: 0, currency: "EUR" };
+        return { balanceInCents: 0, currency: "EUR" };
     }
 
     try {
@@ -24,12 +24,13 @@ async function getCachedProjectBalance(
             openCollectiveID,
             projectId,
         );
-        const balance = balanceResult.data?.project?.stats?.balance?.value;
+        const balanceInCents =
+            balanceResult.data?.project?.stats?.balance?.valueInCents;
         const currency =
             balanceResult.data?.project?.stats?.balance?.currency ?? "EUR";
 
         return {
-            balance: balance ?? null,
+            balanceInCents: balanceInCents ?? null,
             currency,
         };
     } catch (error) {
@@ -37,7 +38,7 @@ async function getCachedProjectBalance(
             `Failed to load Open Collective balance for project ${projectId}`,
             error,
         );
-        return { balance: null, currency: "EUR" };
+        return { balanceInCents: null, currency: "EUR" };
     }
 }
 

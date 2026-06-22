@@ -63,7 +63,7 @@ export default async function ProjectPage({
 
                     <FundingProgress
                         goals={project.goals}
-                        balance={project.balance}
+                        balanceInCents={project.balanceInCents}
                         currency={project.currency}
                         className="mt-6"
                     />

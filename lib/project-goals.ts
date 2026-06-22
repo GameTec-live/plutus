@@ -74,7 +74,7 @@ export function validateProjectGoals(goals: ProjectGoalFormValue[]) {
 
 export function getFundingProgressModel(
     goals: ProjectGoal[],
-    balance: number | null,
+    balanceInCents: number | null,
 ) {
     const validGoals = goals.filter(
         (goal) => Number.isSafeInteger(goal.amount) && goal.amount > 0,
@@ -92,9 +92,9 @@ export function getFundingProgressModel(
         );
     const visualMaximum = Math.max(...validGoals.map((goal) => goal.amount));
     const balanceCents =
-        balance === null || !Number.isFinite(balance)
+        balanceInCents === null || !Number.isFinite(balanceInCents)
             ? null
-            : Math.round(balance * 100);
+            : Math.round(balanceInCents);
     const fillPercentage =
         balanceCents === null
             ? 0
