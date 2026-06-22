@@ -103,8 +103,7 @@ export function OpenCollectiveDonationEmbed({
             allow="payment"
             loading="eager"
             width="100%"
-            height="2000"
-            sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            height="1600"
         />
     );
 }
