@@ -2,10 +2,12 @@ import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
+import { FundingProgress } from "@/components/project/fundingProgress";
 import { OpenCollectiveDonationEmbed } from "@/components/project/openCollectiveDonationEmbed";
 import { ProjectImageCarousel } from "@/components/project/projectImageCarousel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cacheTags } from "@/lib/cache-tags";
+import { getProjectWithBalance } from "@/lib/connected-db-oc/project";
 import { getProjectById } from "@/lib/db/queries/project";
 import { getOpenCollectiveWebUrl } from "@/lib/oc/url";
 
@@ -25,11 +27,13 @@ export default async function ProjectPage({
 
     cacheTag(cacheTags.projects.all, cacheTags.projects.byId(id));
 
-    const project = await getProjectById(id);
+    const projectData = await getProjectById(id);
 
-    if (!project) {
+    if (!projectData) {
         notFound();
     }
+
+    const project = await getProjectWithBalance(projectData);
 
     const openCollectiveBaseUrl = getOpenCollectiveWebUrl();
     const embedUrl = project.openCollectiveID
@@ -56,6 +60,13 @@ export default async function ProjectPage({
                     <p className="mt-3 wrap-anywhere text-base text-muted-foreground sm:text-lg">
                         {project.shortDescription}
                     </p>
+
+                    <FundingProgress
+                        goals={project.goals}
+                        balance={project.balance}
+                        currency={project.currency}
+                        className="mt-6"
+                    />
 
                     <Link
                         href={`/user/${project.creator.id}`}

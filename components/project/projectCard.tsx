@@ -9,9 +9,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldLabel } from "@/components/ui/field";
-import { Progress } from "@/components/ui/progress";
 import type { Project } from "@/lib/connected-db-oc/project";
+import { FundingProgress } from "./fundingProgress";
 
 export function ProjectCard({ project }: { project: Project }) {
     return (
@@ -32,20 +31,16 @@ export function ProjectCard({ project }: { project: Project }) {
                         {project.shortDescription || "No description provided."}
                     </CardDescription>
                 </CardHeader>
-                <CardFooter className="relative z-20">
-                    <Field className="w-full max-w-sm">
-                        <FieldLabel htmlFor={`progress-${project.id}`}>
-                            <span> Funding progress</span>
-                            <span className="ml-auto">
-                                {project.balance} {project.currency}
-                            </span>
-                        </FieldLabel>
-                        <Progress
-                            value={project.balance}
-                            id={`progress-${project.id}`}
+                {project.goals.length > 0 && (
+                    <CardFooter className="relative z-20">
+                        <FundingProgress
+                            goals={project.goals}
+                            balance={project.balance}
+                            currency={project.currency}
+                            compact
                         />
-                    </Field>
-                </CardFooter>
+                    </CardFooter>
+                )}
             </Card>
         </Link>
     );
