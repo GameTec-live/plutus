@@ -25,7 +25,14 @@ export function ProjectCardGrid({
             id={id}
         >
             {projects.map((project) => (
-                <Suspense key={project.id} fallback={<ProjectCardSkeleton />}>
+                <Suspense
+                    key={project.id}
+                    fallback={
+                        <ProjectCardSkeleton
+                            showProgress={project.goals.length > 0}
+                        />
+                    }
+                >
                     <ProjectCardShell project={project} />
                 </Suspense>
             ))}

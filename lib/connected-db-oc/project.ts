@@ -7,33 +7,54 @@ import {
 } from "@/lib/db/queries/project";
 import { getProjectBalanceByProjectId } from "@/lib/oc/queries/project";
 
-export async function getProjectWithBalance(project: DBProject) {
+async function getCachedProjectBalance(
+    projectId: string,
+    openCollectiveID: string | null,
+) {
     "use cache";
     cacheLife("hours");
-    cacheTag(cacheTags.projects.all, cacheTags.projects.byId(project.id));
+    cacheTag(cacheTags.openCollective.projectBalance(projectId));
 
-    if (!project.openCollectiveID) {
-        return { ...project, balance: 0, currency: "€" };
+    if (!openCollectiveID) {
+        return { balanceInCents: 0, currency: "EUR" };
     }
 
-    cacheTag(cacheTags.openCollective.projectBalance(project.id));
+    try {
+        const balanceResult = await getProjectBalanceByProjectId(
+            openCollectiveID,
+            projectId,
+        );
+        const balanceInCents =
+            balanceResult.data?.project?.stats?.balance?.valueInCents;
+        const currency =
+            balanceResult.data?.project?.stats?.balance?.currency ?? "EUR";
 
-    const balanceResult = await getProjectBalanceByProjectId(
-        project.openCollectiveID,
-        project.id,
-    );
-    const balance = balanceResult.data?.project?.stats?.balance?.value ?? 0;
-    const currency =
-        balanceResult.data?.project?.stats?.balance?.currency ?? "€";
-
-    return {
-        ...project,
-        balance,
-        currency,
-    };
+        return {
+            balanceInCents: balanceInCents ?? null,
+            currency,
+        };
+    } catch (error) {
+        console.error(
+            `Failed to load Open Collective balance for project ${projectId}`,
+            error,
+        );
+        return { balanceInCents: null, currency: "EUR" };
+    }
 }
 
-export type Project = Awaited<ReturnType<typeof getProjectWithBalance>>;
+export async function getProjectWithBalance<
+    T extends { id: string; openCollectiveID: string | null },
+>(project: T) {
+    const balance = await getCachedProjectBalance(
+        project.id,
+        project.openCollectiveID,
+    );
+    return { ...project, ...balance };
+}
+
+export type Project = Awaited<
+    ReturnType<typeof getProjectWithBalance<DBProject>>
+>;
 
 export async function GetAllProjects() {
     "use cache";

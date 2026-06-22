@@ -1,11 +1,13 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
     bigint,
     boolean,
+    check,
     index,
     pgTable,
     text,
     timestamp,
+    uniqueIndex,
     uuid,
 } from "drizzle-orm/pg-core";
 
@@ -164,17 +166,28 @@ export const projectGoal = pgTable(
         projectId: uuid("project_id")
             .notNull()
             .references(() => project.id, { onDelete: "cascade" }),
-        title: text("title"),
+        title: text("title").notNull(),
+        description: text("description").notNull(),
         amount: bigint("amount", { mode: "number" }).notNull(), // amount in cents
         isStretch: boolean("is_stretch").default(false).notNull(),
-        isPrimary: boolean("is_primary"),
+        isPrimary: boolean("is_primary").default(false).notNull(),
         createdAt: timestamp("created_at").defaultNow().notNull(),
         updatedAt: timestamp("updated_at")
             .defaultNow()
             .$onUpdate(() => /* @__PURE__ */ new Date())
             .notNull(),
     },
-    (table) => [index("project_goal_projectId_idx").on(table.projectId)],
+    (table) => [
+        index("project_goal_projectId_idx").on(table.projectId),
+        uniqueIndex("project_goal_one_primary_idx")
+            .on(table.projectId)
+            .where(sql`${table.isPrimary} = true`),
+        check("project_goal_positive_amount", sql`${table.amount} > 0`),
+        check(
+            "project_goal_primary_not_stretch",
+            sql`not (${table.isPrimary} and ${table.isStretch})`,
+        ),
+    ],
 );
 
 export const projectGoalRelations = relations(projectGoal, ({ one }) => ({

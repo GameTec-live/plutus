@@ -9,10 +9,7 @@ export async function getProjectBalanceByProjectId(
 ) {
     "use cache";
     cacheLife("hours");
-    cacheTag(
-        cacheTags.projects.all,
-        cacheTags.openCollective.projectBalance(projectId),
-    );
+    cacheTag(cacheTags.openCollective.projectBalance(projectId));
     const result = await apolloClient.query({
         query: GetProjectBalanceByProjectIdDocument,
         variables: {

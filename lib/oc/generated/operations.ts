@@ -291,7 +291,10 @@ export type GetProjectBalanceByProjectIdQuery = {
     project: {
         stats: {
             id: string | null;
-            balance: { value: number | null; currency: Currency | null };
+            balance: {
+                valueInCents: number | null;
+                currency: Currency | null;
+            };
         } | null;
     } | null;
 };
@@ -361,7 +364,7 @@ export const GetProjectBalanceByProjectIdDocument = {
                                                             kind: "Field",
                                                             name: {
                                                                 kind: "Name",
-                                                                value: "value",
+                                                                value: "valueInCents",
                                                             },
                                                         },
                                                         {
