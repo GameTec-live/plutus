@@ -191,7 +191,7 @@ export function ProjectImageCarousel({
                         closeLightbox();
                     }
                 }}
-                className="m-auto h-full max-h-none w-full max-w-none border-0 bg-transparent p-4 text-foreground backdrop:bg-black/85 open:flex open:items-center open:justify-center"
+                className="m-auto h-full max-h-none w-full max-w-none border-0 bg-transparent p-4 text-foreground backdrop:bg-foreground/85 open:flex open:items-center open:justify-center"
                 aria-label={`${projectTitle} enlarged image`}
             >
                 <div className="relative h-full max-h-[90dvh] w-full max-w-7xl">
