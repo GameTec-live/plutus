@@ -29,6 +29,8 @@ export async function getProjectBalanceByProjectId(
 }
 
 export async function getConfiguredCollectiveCurrency() {
+    "use cache";
+    cacheLife("days");
     const result = await apolloClient.query({
         query: GetCollectiveCurrencyDocument,
         variables: { slug: getOpenCollectiveParentSlug() },

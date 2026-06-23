@@ -260,7 +260,10 @@ function SubmissionStatus({
 function WizardProgress({ step }: { step: number }) {
     return (
         <div className="sticky bottom-0 border-t bg-background/95 px-4 py-3 backdrop-blur sm:px-6">
-            <Progress value={(step + 1) * 20} className="mx-auto max-w-7xl">
+            <Progress
+                value={((step + 1) / wizardSteps.length) * 100}
+                className="mx-auto max-w-7xl"
+            >
                 <ProgressLabel>{wizardSteps[step].name}</ProgressLabel>
                 <span className="ml-auto text-sm tabular-nums text-muted-foreground">
                     Step {step + 1} of {wizardSteps.length}
