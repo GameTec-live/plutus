@@ -55,6 +55,8 @@ export function ProjectImagePicker({
             setPickerError(
                 `Choose no more than ${PROJECT_IMAGE_MAX_COUNT} images.`,
             );
+        } else {
+            setPickerError(null);
         }
         onChange([
             ...value,
