@@ -150,6 +150,5 @@ export function isOwnedProjectImageKey(
 }
 
 export function getPublicProjectImageUrl(publicBase: string, key: string) {
-    const encodedKey = key.split("/").map(encodeURIComponent).join("/");
-    return `${publicBase.replace(/\/$/, "")}/${encodedKey}`;
+    return `${publicBase.replace(/\/$/, "")}/${key}`;
 }
