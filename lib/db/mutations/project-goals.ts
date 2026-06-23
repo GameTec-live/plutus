@@ -62,30 +62,43 @@ export async function replaceProjectGoals({
             );
         }
 
-        const savedGoals = await db.transaction(async (transaction) => {
-            await transaction
-                .delete(projectGoal)
-                .where(eq(projectGoal.projectId, projectId));
+        const deleteGoals = db
+            .delete(projectGoal)
+            .where(eq(projectGoal.projectId, projectId));
 
-            if (validation.goals.length === 0) return [];
+        let savedGoals: {
+            id: string;
+            title: string;
+            description: string;
+            amount: number;
+            isStretch: boolean;
+            isPrimary: boolean;
+        }[] = [];
 
-            return transaction
-                .insert(projectGoal)
-                .values(
-                    validation.goals.map((goal) => ({
-                        ...goal,
-                        projectId,
-                    })),
-                )
-                .returning({
-                    id: projectGoal.id,
-                    title: projectGoal.title,
-                    description: projectGoal.description,
-                    amount: projectGoal.amount,
-                    isStretch: projectGoal.isStretch,
-                    isPrimary: projectGoal.isPrimary,
-                });
-        });
+        if (validation.goals.length === 0) {
+            await db.batch([deleteGoals]);
+        } else {
+            const [, insertedGoals] = await db.batch([
+                deleteGoals,
+                db
+                    .insert(projectGoal)
+                    .values(
+                        validation.goals.map((goal) => ({
+                            ...goal,
+                            projectId,
+                        })),
+                    )
+                    .returning({
+                        id: projectGoal.id,
+                        title: projectGoal.title,
+                        description: projectGoal.description,
+                        amount: projectGoal.amount,
+                        isStretch: projectGoal.isStretch,
+                        isPrimary: projectGoal.isPrimary,
+                    }),
+            ]);
+            savedGoals = insertedGoals;
+        }
 
         updateTag(cacheTags.projects.all);
         updateTag(cacheTags.projects.db);

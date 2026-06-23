@@ -2,9 +2,24 @@ import { RejectUpload, type Router, route } from "@better-upload/server";
 import { toRouteHandler } from "@better-upload/server/adapters/next";
 import { deleteObject } from "@better-upload/server/helpers";
 import { headers } from "next/headers";
+import { z } from "zod";
 import { env } from "@/env";
 import { auth } from "@/lib/auth";
+import {
+    getProjectUploadPrefix,
+    PROJECT_IMAGE_MAX_COUNT,
+    PROJECT_IMAGE_MAX_SIZE,
+    PROJECT_IMAGE_TYPES,
+    type ProjectImageType,
+} from "@/lib/project-creation";
 import { s3 } from "@/lib/s3";
+
+const imageExtension: Record<ProjectImageType, string> = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif",
+};
 
 const router: Router = {
     client: s3,
@@ -56,9 +71,12 @@ const router: Router = {
             },
         }),
         projectImages: route({
-            fileTypes: ["image/*"],
+            fileTypes: [...PROJECT_IMAGE_TYPES],
+            maxFileSize: PROJECT_IMAGE_MAX_SIZE,
             multipleFiles: true,
-            onBeforeUpload: async () => {
+            maxFiles: PROJECT_IMAGE_MAX_COUNT,
+            clientMetadataSchema: z.object({ projectId: z.uuid() }),
+            onBeforeUpload: async ({ clientMetadata }) => {
                 const session = await auth.api.getSession({
                     headers: await headers(),
                 });
@@ -66,13 +84,16 @@ const router: Router = {
                 if (!session) {
                     throw new RejectUpload("unauthorized");
                 }
-            },
 
-            onAfterSignedUrl: async ({ files }) => {
-                for (const file of files) {
-                    // TODO: save file to DB (ProjectImages)
-                    console.log("File uploaded:", file.objectInfo.key);
-                }
+                const prefix = getProjectUploadPrefix(
+                    session.user.id,
+                    clientMetadata.projectId,
+                );
+                return {
+                    generateObjectInfo: ({ file }) => ({
+                        key: `${prefix}${crypto.randomUUID()}.${imageExtension[file.type as ProjectImageType]}`,
+                    }),
+                };
             },
         }),
     },

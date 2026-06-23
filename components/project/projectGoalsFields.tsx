@@ -144,6 +144,7 @@ export function ProjectGoalsFields({
                             <Input
                                 id={`${prefix}-title`}
                                 value={goal.title}
+                                maxLength={100}
                                 onChange={(event) =>
                                     updateGoal(index, {
                                         title: event.target.value,
