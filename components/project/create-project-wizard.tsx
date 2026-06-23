@@ -110,9 +110,6 @@ export function CreateProjectWizard({
             <main className="flex flex-1 items-start justify-center px-4 py-8 sm:px-6">
                 <div className="my-auto w-full max-w-3xl">
                     <header className="mb-5 text-center sm:text-left">
-                        <p className="text-sm font-medium text-primary">
-                            Create project
-                        </p>
                         <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
                             {current.title}
                         </h1>
@@ -125,7 +122,7 @@ export function CreateProjectWizard({
                         <CardHeader className="sr-only">
                             <CardTitle>{current.name}</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-6 p-5 sm:p-7">
+                        <CardContent className="space-y-6">
                             {step === 0 ? (
                                 <form.Field name="title">
                                     {(field) => (
