@@ -92,7 +92,7 @@ Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.s
   | `RESEND_BASE_URL` | optional, provide a custom resend api base url to talk to instead. Leaving empty uses resends api. |  
   | `S3_KEY` | S3 secret access key for backblaze |
   | `S3_KEY_ID` | S3 access key ID for backblaze|
-  | `S3_REGION` | Region where your S3 bucket is hosted for backblaze, custom|
+  | `S3_REGION` | Region where your S3 bucket is needed for backblaze, custom|
   | `S3_HOST` | your custom host for S3 bucket |
   | `S3_ACCESS_KEY_ID` | S3 access key ID for custom and cloudflare |
   | `S3_ACOUNT_ID` | S3 account ID for cloudflare |
