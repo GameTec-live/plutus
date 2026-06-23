@@ -79,16 +79,26 @@ Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.s
   | `OPEN_COLLECTIVE_COLLECTIVE_URL` | URL of your Open Collective page |
   | `OPEN_COLLECTIVE_ENDPOINT` | Open Collective GraphQL API endpoint |
   | `OPEN_COLLECTIVE_TOKEN` | Open Collective API token |
-  | `RESEND_API_KEY` | optional, API Key to interact with the resend api or selfsend api (email). Empty disables email |
-  | `RESEND_BASE_URL` | optional, provide a custom resend api base url to talk to instead. Leaving empty uses resends api. |
   | `RESEND_FROM_EMAIL` | The email address the server should send emails from |
   | `S3_BUCKETNAME` | Name of your S3 bucket |
   | `S3_CLIENT` | S3-compatible storage provider name (cloudflare, backblaze, custom) |
-  | `S3_KEY` | S3 secret access key |
-  | `S3_KEY_ID` | S3 access key ID |
   | `S3_PUBLIC_URL` | Public URL used to serve uploaded files |
-  | `S3_REGION` | Region where your S3 bucket is hosted |
 
+  Optional environment variables:
+
+  | Variable | Description |
+  |----------|-------------|
+  | `RESEND_API_KEY` | optional, API Key to interact with the resend api or selfsend api (email). Empty disables email |
+  | `RESEND_BASE_URL` | optional, provide a custom resend api base url to talk to instead. Leaving empty uses resends api. |  
+  | `S3_KEY` | S3 secret access key for backblaze |
+  | `S3_KEY_ID` | S3 access key ID for backblaze|
+  | `S3_REGION` | Region where your S3 bucket is hosted for backblaze, custom|
+  | `S3_HOST` | your custom host for S3 bucket |
+  | `S3_ACCESS_KEY_ID` | S3 access key ID for custom and cloudflare |
+  | `S3_ACOUNT_ID` | S3 account ID for cloudflare |
+  | `S3_SECRET_ACCESS_KEY` | S3 secret access key for cloudflare or custom |
+  
+ 
 4. **Install dependencies**
    ```bash
    bun install
