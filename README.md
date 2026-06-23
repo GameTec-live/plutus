@@ -65,7 +65,7 @@ Plutus is a [Next.js](https://nextjs.org/) application using [Bun](https://bun.s
   | `GITHUB_CLIENT_SECRET` | GitHub OAuth application client secret |
   | `MEILI_INDEX` | the index to store search data in |
   | `MEILI_MANAGE_KEY` | Key with full permission for provisioning a new meilisearch instance |
-  | `MEILI_MASTER_KEY` | Key with permisison to fully manage the MEILI_INDEX |
+  | `MEILI_MASTER_KEY` | Key with permission to fully manage the MEILI_INDEX |
   | `MEILI_SEARCH_KEY` | Public key that has search permission on the MEILI_INDEX |
   | `MEILI_URL` | URL of your Meilisearch instance  |
   | `NEXT_PUBLIC_GITHUB_ENABLED` | Enable GitHub authentication (`true` or `false`) |
