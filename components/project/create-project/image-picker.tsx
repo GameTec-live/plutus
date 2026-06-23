@@ -122,7 +122,9 @@ export function ProjectImagePicker({
                 <ImagePlus className="mb-3 size-8 text-muted-foreground" />
                 <p className="font-medium">Drop project images here</p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                    JPEG, PNG, WebP, or GIF · 5 MB each · {value.length}/10
+                    JPEG, PNG, WebP, or GIF ·{" "}
+                    {Math.round(PROJECT_IMAGE_MAX_SIZE / (1024 * 1024))} MB each
+                    · {value.length}/{PROJECT_IMAGE_MAX_COUNT}
                 </p>
                 <Button
                     type="button"
