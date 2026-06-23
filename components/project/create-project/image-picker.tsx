@@ -87,7 +87,9 @@ export function ProjectImagePicker({
                     ? "Some files were rejected. Use JPEG, PNG, WebP, or GIF images up to 5 MB."
                     : null,
             );
-            addFiles(acceptedFiles);
+            if (acceptedFiles.length > 0) {
+                addFiles(acceptedFiles);
+            }
         },
     });
 
