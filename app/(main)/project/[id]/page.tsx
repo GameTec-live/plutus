@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 import { FundingProgress } from "@/components/project/fundingProgress";
 import { OpenCollectiveDonationEmbed } from "@/components/project/openCollectiveDonationEmbed";
+import { ProjectMarkdown } from "@/components/project/project-markdown";
 import { ProjectImageCarousel } from "@/components/project/projectImageCarousel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cacheTags } from "@/lib/cache-tags";
@@ -100,10 +101,16 @@ export default async function ProjectPage({
                         >
                             About this project
                         </h2>
-                        <p className="mt-4 wrap-anywhere whitespace-pre-wrap text-sm leading-7 text-foreground/90 sm:text-base">
-                            {project.longDescription?.trim() ||
-                                "No additional project description has been provided."}
-                        </p>
+                        {project.longDescription?.trim() ? (
+                            <ProjectMarkdown className="mt-4">
+                                {project.longDescription}
+                            </ProjectMarkdown>
+                        ) : (
+                            <p className="mt-4 text-sm text-muted-foreground sm:text-base">
+                                No additional project description has been
+                                provided.
+                            </p>
+                        )}
                     </section>
                 </article>
 

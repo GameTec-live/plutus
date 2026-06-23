@@ -9,3 +9,48 @@ query GetProjectBalanceByProjectId($slug: String) {
         }
     }
 }
+
+query GetProjectForCreationRecovery($slug: String) {
+    project(slug: $slug) {
+        id
+        slug
+        name
+        parent {
+            slug
+        }
+    }
+}
+
+query GetCollectiveCurrency($slug: String) {
+    account(slug: $slug) {
+        currency
+    }
+}
+
+mutation CreateOpenCollectiveProject(
+    $project: ProjectCreateInput!
+    $parent: AccountReferenceInput
+    $disableContributions: Boolean!
+    $disableExpenses: Boolean!
+) {
+    createProject(
+        project: $project
+        parent: $parent
+        disableContributions: $disableContributions
+        disableExpenses: $disableExpenses
+    ) {
+        id
+        slug
+        name
+        parent {
+            slug
+        }
+    }
+}
+
+mutation DeleteOpenCollectiveProject($account: AccountReferenceInput!) {
+    deleteAccount(account: $account) {
+        id
+        slug
+    }
+}

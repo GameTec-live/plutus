@@ -5,6 +5,10 @@ import type {
 
 const amountPattern = /^\d+(?:\.\d{1,2})?$/;
 
+export function hasVisibleText(value: string) {
+    return value.replace(/[\p{White_Space}\p{Cf}]/gu, "").length > 0;
+}
+
 export function parseAmountToCents(value: string): number | null {
     const normalized = value.trim();
     if (!amountPattern.test(normalized)) return null;
@@ -27,12 +31,17 @@ export function validateProjectGoals(goals: ProjectGoalFormValue[]) {
     const normalizedGoals = goals.map((goal, index) => {
         if (!goal.clientId)
             addError(`${index}.clientId`, "Goal ID is required.");
-        if (!goal.title.trim()) {
+        if (!hasVisibleText(goal.title)) {
             addError(`${index}.title`, "Goal title is required.");
+        } else if ([...goal.title.trim()].length > 100) {
+            addError(
+                `${index}.title`,
+                "Goal title must be 100 characters or fewer.",
+            );
         }
-        if (!goal.description.trim()) {
+        if (!hasVisibleText(goal.description)) {
             addError(`${index}.description`, "Goal description is required.");
-        } else if (goal.description.trim().length > 200) {
+        } else if ([...goal.description.trim()].length > 200) {
             addError(
                 `${index}.description`,
                 "Goal description must be 200 characters or fewer.",

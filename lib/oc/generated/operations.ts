@@ -10,6 +10,13 @@ export type Incremental<T> =
       };
 
 import type { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
+export type AccountReferenceInput = {
+    /** The public id identifying the account (ie: dgm9bnk8-0437xqry-ejpvzeol-jdayw5re, acc_xxxxxxxx) */
+    id?: string | null | undefined;
+    /** The slug identifying the account (ie: babel for https://opencollective.com/babel) */
+    slug?: string | null | undefined;
+};
+
 /** All supported currencies */
 export type Currency =
     /** UAE Dirham */
@@ -283,6 +290,51 @@ export type Currency =
     /** Zambian Kwacha */
     | "ZMW";
 
+export type ProjectCreateInput = {
+    /** The profile background image, for the banner and social media sharing */
+    backgroundImage?: unknown;
+    description: string;
+    /** The profile avatar image */
+    image?: unknown;
+    name: string;
+    settings?: unknown;
+    slug: string;
+    /** The social links in order of preference */
+    socialLinks?: Array<SocialLinkInput> | null | undefined;
+    tags?: Array<string | null | undefined> | null | undefined;
+};
+
+export type SocialLinkInput = {
+    type: SocialLinkType;
+    url: unknown;
+};
+
+/** The type of social link */
+export type SocialLinkType =
+    | "BLUESKY"
+    | "DISCORD"
+    | "DISCOURSE"
+    | "FACEBOOK"
+    | "GHOST"
+    | "GIT"
+    | "GITHUB"
+    | "GITLAB"
+    | "INSTAGRAM"
+    | "LINKEDIN"
+    | "MASTODON"
+    | "MATTERMOST"
+    | "MEETUP"
+    | "PEERTUBE"
+    | "PIXELFED"
+    | "SLACK"
+    | "THREADS"
+    | "TIKTOK"
+    | "TUMBLR"
+    | "TWITCH"
+    | "TWITTER"
+    | "WEBSITE"
+    | "YOUTUBE";
+
 export type GetProjectBalanceByProjectIdQueryVariables = Exact<{
     slug?: string | null | undefined;
 }>;
@@ -291,12 +343,94 @@ export type GetProjectBalanceByProjectIdQuery = {
     project: {
         stats: {
             id: string | null;
-            balance: {
-                valueInCents: number | null;
-                currency: Currency | null;
-            };
+            balance: { valueInCents: number | null; currency: Currency | null };
         } | null;
     } | null;
+};
+
+export type GetProjectForCreationRecoveryQueryVariables = Exact<{
+    slug?: string | null | undefined;
+}>;
+
+export type GetProjectForCreationRecoveryQuery = {
+    project: {
+        id: string;
+        slug: string;
+        name: string | null;
+        parent:
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | null;
+    } | null;
+};
+
+export type GetCollectiveCurrencyQueryVariables = Exact<{
+    slug?: string | null | undefined;
+}>;
+
+export type GetCollectiveCurrencyQuery = {
+    account:
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | { currency: Currency }
+        | null;
+};
+
+export type CreateOpenCollectiveProjectMutationVariables = Exact<{
+    project: ProjectCreateInput;
+    parent?: AccountReferenceInput | null | undefined;
+    disableContributions: boolean;
+    disableExpenses: boolean;
+}>;
+
+export type CreateOpenCollectiveProjectMutation = {
+    createProject: {
+        id: string;
+        slug: string;
+        name: string | null;
+        parent:
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | { slug: string }
+            | null;
+    } | null;
+};
+
+export type DeleteOpenCollectiveProjectMutationVariables = Exact<{
+    account: AccountReferenceInput;
+}>;
+
+export type DeleteOpenCollectiveProjectMutation = {
+    deleteAccount:
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | { id: string; slug: string }
+        | null;
 };
 
 export const GetProjectBalanceByProjectIdDocument = {
@@ -390,4 +524,356 @@ export const GetProjectBalanceByProjectIdDocument = {
 } as unknown as DocumentNode<
     GetProjectBalanceByProjectIdQuery,
     GetProjectBalanceByProjectIdQueryVariables
+>;
+export const GetProjectForCreationRecoveryDocument = {
+    kind: "Document",
+    definitions: [
+        {
+            kind: "OperationDefinition",
+            operation: "query",
+            name: { kind: "Name", value: "GetProjectForCreationRecovery" },
+            variableDefinitions: [
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "slug" },
+                    },
+                    type: {
+                        kind: "NamedType",
+                        name: { kind: "Name", value: "String" },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "project" },
+                        arguments: [
+                            {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "slug" },
+                                value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "slug" },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "slug" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "parent" },
+                                    selectionSet: {
+                                        kind: "SelectionSet",
+                                        selections: [
+                                            {
+                                                kind: "Field",
+                                                name: {
+                                                    kind: "Name",
+                                                    value: "slug",
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    GetProjectForCreationRecoveryQuery,
+    GetProjectForCreationRecoveryQueryVariables
+>;
+export const GetCollectiveCurrencyDocument = {
+    kind: "Document",
+    definitions: [
+        {
+            kind: "OperationDefinition",
+            operation: "query",
+            name: { kind: "Name", value: "GetCollectiveCurrency" },
+            variableDefinitions: [
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "slug" },
+                    },
+                    type: {
+                        kind: "NamedType",
+                        name: { kind: "Name", value: "String" },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "account" },
+                        arguments: [
+                            {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "slug" },
+                                value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "slug" },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "currency" },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    GetCollectiveCurrencyQuery,
+    GetCollectiveCurrencyQueryVariables
+>;
+export const CreateOpenCollectiveProjectDocument = {
+    kind: "Document",
+    definitions: [
+        {
+            kind: "OperationDefinition",
+            operation: "mutation",
+            name: { kind: "Name", value: "CreateOpenCollectiveProject" },
+            variableDefinitions: [
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "project" },
+                    },
+                    type: {
+                        kind: "NonNullType",
+                        type: {
+                            kind: "NamedType",
+                            name: { kind: "Name", value: "ProjectCreateInput" },
+                        },
+                    },
+                },
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "parent" },
+                    },
+                    type: {
+                        kind: "NamedType",
+                        name: { kind: "Name", value: "AccountReferenceInput" },
+                    },
+                },
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "disableContributions" },
+                    },
+                    type: {
+                        kind: "NonNullType",
+                        type: {
+                            kind: "NamedType",
+                            name: { kind: "Name", value: "Boolean" },
+                        },
+                    },
+                },
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "disableExpenses" },
+                    },
+                    type: {
+                        kind: "NonNullType",
+                        type: {
+                            kind: "NamedType",
+                            name: { kind: "Name", value: "Boolean" },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createProject" },
+                        arguments: [
+                            {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "project" },
+                                value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "project" },
+                                },
+                            },
+                            {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "parent" },
+                                value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "parent" },
+                                },
+                            },
+                            {
+                                kind: "Argument",
+                                name: {
+                                    kind: "Name",
+                                    value: "disableContributions",
+                                },
+                                value: {
+                                    kind: "Variable",
+                                    name: {
+                                        kind: "Name",
+                                        value: "disableContributions",
+                                    },
+                                },
+                            },
+                            {
+                                kind: "Argument",
+                                name: {
+                                    kind: "Name",
+                                    value: "disableExpenses",
+                                },
+                                value: {
+                                    kind: "Variable",
+                                    name: {
+                                        kind: "Name",
+                                        value: "disableExpenses",
+                                    },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "slug" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "parent" },
+                                    selectionSet: {
+                                        kind: "SelectionSet",
+                                        selections: [
+                                            {
+                                                kind: "Field",
+                                                name: {
+                                                    kind: "Name",
+                                                    value: "slug",
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    CreateOpenCollectiveProjectMutation,
+    CreateOpenCollectiveProjectMutationVariables
+>;
+export const DeleteOpenCollectiveProjectDocument = {
+    kind: "Document",
+    definitions: [
+        {
+            kind: "OperationDefinition",
+            operation: "mutation",
+            name: { kind: "Name", value: "DeleteOpenCollectiveProject" },
+            variableDefinitions: [
+                {
+                    kind: "VariableDefinition",
+                    variable: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "account" },
+                    },
+                    type: {
+                        kind: "NonNullType",
+                        type: {
+                            kind: "NamedType",
+                            name: {
+                                kind: "Name",
+                                value: "AccountReferenceInput",
+                            },
+                        },
+                    },
+                },
+            ],
+            selectionSet: {
+                kind: "SelectionSet",
+                selections: [
+                    {
+                        kind: "Field",
+                        name: { kind: "Name", value: "deleteAccount" },
+                        arguments: [
+                            {
+                                kind: "Argument",
+                                name: { kind: "Name", value: "account" },
+                                value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "account" },
+                                },
+                            },
+                        ],
+                        selectionSet: {
+                            kind: "SelectionSet",
+                            selections: [
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                },
+                                {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "slug" },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    DeleteOpenCollectiveProjectMutation,
+    DeleteOpenCollectiveProjectMutationVariables
 >;
